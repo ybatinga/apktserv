@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="apekato" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>apkt.model.Address</class>
+    <class>apkt.model.Login</class>
+    <class>apkt.model.MobileInfo</class>
+    <class>apkt.model.Order</class>
+    <class>apkt.model.OrderWallet</class>
+    <class>apkt.model.OrderPymntMthd</class>
+    <class>apkt.model.PaymentForward</class>
+    <class>apkt.model.PymntMthd</class>
+    <class>apkt.model.OrderStatus</class>
+    <class>apkt.model.Tx</class>
+    <class>apkt.model.TxInput</class>
+    <class>apkt.model.TxOutput</class>
+    <class>apkt.model.TxPymntMthd</class>
+    <class>apkt.model.TxWallet</class>
+    <class>apkt.model.Wallet</class>
+    <class>apkt.model.AppVersion</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes><!--Order of elements inside <persistence-unit> is important, <exclude-unlisted-classes> should go after <class>-->
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/apekato"/>
+      <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+    </properties>
+<!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/apekato_prod"/>
+      <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+    </properties>-->
+<!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:8812/apekato_prod"/>
+      <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+    </properties>-->
+<!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:8812/apekato_holog"/>
+      <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+    </properties>-->
+<!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/apekato_holog"/>
+      <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+    </properties>-->
+<!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:8812/apekato"/>
+      <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+    </properties>-->
+  </persistence-unit>
+</persistence>

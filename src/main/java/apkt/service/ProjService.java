@@ -1,0 +1,39 @@
+package apkt.service;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+public class ProjService {
+    
+    public static final String URL = UrlType.HTTP_PROD;
+    public static final String BLOCKCYPHERTOKEN = "15cec3f0a8754248af469151f249b5d3";
+    public static final String ADDRESS = AddressType.TEST;
+    public static String LANGUAGE;
+
+    private class AddressType{
+        public static final String TEST = "C9uvjNrozYgX41C7yKdczFVz5qepHW1Yes";
+        public static final String MAIN = "1D9Yo3PyXbNJ6osgQnbEQf4wn8kZaPtSPc";
+    }
+    
+//    public static class Mode{
+//        public static final String HOMOLOG = "homolog";
+//        public static final String PROD = "prod";
+//    }
+    public static class UrlType{
+        public static final String HTTP_PROD = "https://www.apekato.com/webresources/";
+        public static final String HTTP_HOMOLOG = "https://www.apekato.com/homolog/webresources/";        
+    }  
+    
+    public static ResourceBundle RB;    
+    public static class LanguegeType{
+    	public static final ResourceBundle resourceBundle_default = ResourceBundle.getBundle(
+                "SystemMessages", Locale.getDefault());
+
+    	public static final ResourceBundle resourceBundle_pt = ResourceBundle.getBundle(
+                "SystemMessages", Locale.forLanguageTag("pt"));
+
+    }   
+}
+
+
+
