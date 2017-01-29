@@ -7,7 +7,6 @@ import apkt.blockcypher.service.PaymentForwardService;
 import apkt.blockcypher.service.TransactionService;
 import apkt.blockcypher.service.WebhookService;
 import apkt.utils.EndpointConfig;
-import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.text.MessageFormat;
@@ -23,7 +22,6 @@ import java.text.MessageFormat;
  */
 public final class BlockCypherContext {
 
-    private static final Logger logger = Logger.getLogger(BlockCypherContext.class);
 
     private AddressService addressService;
     private BlockChainService blockChainService;
@@ -37,14 +35,11 @@ public final class BlockCypherContext {
     /**
      * Constructor. If you do not provide a version currency and network it will be read from blockcypher.endpoint.properties in classpath
      */
-    public BlockCypherContext() {
+    public BlockCypherContext() throws Exception {
         endpointConfig = new EndpointConfig();
         if (!endpointConfig.isValid()) {
             throw new RuntimeException("Creating BlockCypherContext() but you did not provide:" + EndpointConfig.PROPERTY_FILE);
         }
-        logger.info(MessageFormat.format("Creating BlockCypherContext with version {0}, " +
-                        "currency {1}, network {2} on endpoint {3}",
-                endpointConfig.getVersion(), endpointConfig.getCurrency(), endpointConfig.getNetwork(), endpointConfig.getEndpoint()));
         createServices(endpointConfig);
     }
 
@@ -54,11 +49,8 @@ public final class BlockCypherContext {
      * @param currency currency, ie: btc (bitcoin), ltc (lightcoin), uro (urocoin)
      * @param network network, ie: main, test, test3
      */
-    public BlockCypherContext(String version, String currency, String network) {
+    public BlockCypherContext(String version, String currency, String network) throws Exception {
         endpointConfig = new EndpointConfig(version, currency, network);
-        logger.info(MessageFormat.format("Creating BlockCypherContext with version {0}, " +
-                        "currency {1}, network {2} on endpoint {3}",
-                version, currency, network, endpointConfig.getEndpoint()));
         createServices(endpointConfig);
     }
     
@@ -69,28 +61,19 @@ public final class BlockCypherContext {
      * @param network network, ie: main, test, test3
 		 * @param token token, ie: YOURTOKEN
      */
-    public BlockCypherContext(String version, String currency, String network, String token) {
+    public BlockCypherContext(String version, String currency, String network, String token) throws Exception {
         endpointConfig = new EndpointConfig(version, currency, network, token);
-        logger.info(MessageFormat.format("Creating BlockCypherContext with version {0}, " +
-                        "currency {1}, network {2} on endpoint {3} with token {4}",
-                version, currency, network, endpointConfig.getEndpoint(), endpointConfig.getToken()));
         createServices(endpointConfig);
     }
     
 
-    private void createServices(EndpointConfig endpointConfig) {
-        try {
+    private void createServices(EndpointConfig endpointConfig) throws Exception {
             this.addressService = this.getPrivateConstructor(AddressService.class).newInstance(endpointConfig);
             this.blockChainService = this.getPrivateConstructor(BlockChainService.class).newInstance(endpointConfig);
             this.transactionService = this.getPrivateConstructor(TransactionService.class).newInstance(endpointConfig);
             this.webhookService = this.getPrivateConstructor(WebhookService.class).newInstance(endpointConfig);
             this.infoService = this.getPrivateConstructor(InfoService.class).newInstance(endpointConfig);
             this.paymentForwardService = this.getPrivateConstructor(PaymentForwardService.class).newInstance(endpointConfig);
-            logger.info("Services created");
-        } catch (Exception e) {
-            logger.error("Error while creating services", e);
-            throw new RuntimeException(e);
-        }
     }
 
     private <T> Constructor<T> getPrivateConstructor(final Class<T> clazz) throws Exception {

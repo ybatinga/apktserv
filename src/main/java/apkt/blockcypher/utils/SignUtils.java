@@ -3,7 +3,6 @@ package apkt.blockcypher.utils;
 import apkt.model.IntermediaryTransaction;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.Base58;
-import org.apache.log4j.Logger;
 import org.spongycastle.asn1.DERInteger;
 import org.spongycastle.asn1.DERSequenceGenerator;
 import org.spongycastle.asn1.sec.SECNamedCurves;

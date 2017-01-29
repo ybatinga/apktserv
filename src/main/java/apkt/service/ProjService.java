@@ -7,7 +7,7 @@ public class ProjService {
     
     public static final String URL = UrlType.HTTP_PROD;
     public static final String BLOCKCYPHERTOKEN = "15cec3f0a8754248af469151f249b5d3";
-    public static final String ADDRESS = AddressType.TEST;
+    public static final String ADDRESS = AddressType.MAIN;
     public static String LANGUAGE;
 
     private class AddressType{

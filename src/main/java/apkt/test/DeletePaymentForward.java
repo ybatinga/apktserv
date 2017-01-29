@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class DeletePaymentForward {
-    public static void main(String[] args) throws BlockCypherException {
+    public static void main(String[] args) throws BlockCypherException, Exception {
         try {
             BlockCypherContext blockCypherContext = new BlockCypherContext(
                     BlockCypherConstants.VERSION_V1,

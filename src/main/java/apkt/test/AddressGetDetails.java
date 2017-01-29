@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AddressGetDetails {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         try {
             BlockCypherContext blockCypherContext = new BlockCypherContext(

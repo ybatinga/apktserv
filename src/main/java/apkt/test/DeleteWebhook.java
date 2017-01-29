@@ -21,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class DeleteWebhook {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
             BlockCypherContext blockCypherContext = new BlockCypherContext(
                 BlockCypherConstants.VERSION_V1,

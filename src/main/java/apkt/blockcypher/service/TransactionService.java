@@ -17,7 +17,6 @@ import java.io.IOException;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.spongycastle.util.encoders.Hex;
 
 /**
  * Service which provides create/read access to Transaction
@@ -132,38 +131,7 @@ public final class TransactionService extends AbstractService {
         String transactionJson = GsonFactory.getGson().toJson(transaction);
         return postSkeletonTransaction(transactionJson, "new");
     }
-
-        /**
-     * Create a Data Endpoint Transaction You will then need to sign the returned transaction
-     * @param inputAddresses  input addresses
-     * @param outputAddresses output addresses
-     * @param satoshis        value
-     * @return Partially built transaction with the data to sign
-     * @throws BlockCypherException In case there is some error, ie: <code>Address xxx with balance 0 does not have enough funds to transfer 510000.</code>
-     */
-    public IntermediaryTransaction newDataTransaction(List<String> inputAddresses, List<String> outputAddresses, long satoshis) throws BlockCypherException, IOException {
-    	Tx transaction = new Tx();
-        for (String address : inputAddresses) {
-            TxInput input = new TxInput();
-            input.addAddress(address);
-            transaction.addInput(input);
-        }
-        
-        for (String address : outputAddresses) {
-            TxOutput output = new TxOutput();
-            output.addAddress(null);
-            output.setScriptType(TransactionConstants.SCRIPT_TYPE_NULL_DATA);
-            output.setValue(new BigDecimal(satoshis));
-            String s = "testing";
-            byte[] encode = Hex.encode(s.getBytes());
-            output.setScript(new String(encode));
-            transaction.addOutput(output);
-        }
-        
-        String transactionJson = GsonFactory.getGson().toJson(transaction);
-        return postSkeletonTransaction(transactionJson, "new");
-    }
-    
+   
     /**
      * Send a NullData embed via the transaction API.
      * @param nullData

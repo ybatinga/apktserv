@@ -3,7 +3,6 @@ package com.blockcypher.model.address;
 import com.blockcypher.model.transaction.summary.TransactionSummary;
 import com.blockcypher.utils.gson.GsonFactory;
 import com.google.gson.annotations.SerializedName;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -85,8 +84,6 @@ import java.util.List;
 
 public class Address {
 
-    private static final Logger logger = Logger.getLogger(Address.class);
-
     private String address;
     private BigDecimal balance;
     private BigDecimal finalBalance;
@@ -108,10 +105,6 @@ public class Address {
 
     public List<TransactionSummary> getTxrefs() {
         return txrefs;
-    }
-
-    public void post(Address address) {
-        logger.debug("Address Event Received: " + address);
     }
 
     @Override

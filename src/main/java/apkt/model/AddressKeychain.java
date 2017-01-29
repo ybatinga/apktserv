@@ -7,10 +7,8 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class AddressKeychain {
-private static final Logger logger = Logger.getLogger(Address.class);
 
     private String address;
     

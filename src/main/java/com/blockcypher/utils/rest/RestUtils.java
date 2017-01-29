@@ -1,7 +1,6 @@
 package com.blockcypher.utils.rest;
 
 import apkt.utils.EndpointConfig;
-import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
 
@@ -11,8 +10,6 @@ import java.text.MessageFormat;
  * @author <a href="mailto:seb.auvray@gmail.com">Sebastien Auvray</a>
  */
 public final class RestUtils {
-
-    private static final Logger logger = Logger.getLogger(RestUtils.class);
 
 //    public static <T> T post(String resourceUrl, String inputString, String id, Class<T> clazz) throws BlockCypherException {
 //        return JerseyRestUtils.post(resourceUrl, inputString, id, clazz);

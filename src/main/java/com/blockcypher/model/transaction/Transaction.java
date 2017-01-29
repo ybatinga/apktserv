@@ -3,7 +3,6 @@ package com.blockcypher.model.transaction;
 import com.blockcypher.model.transaction.input.Input;
 import com.blockcypher.model.transaction.output.Output;
 import com.blockcypher.utils.gson.GsonFactory;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -77,8 +76,6 @@ import java.util.List;
  */
 public class Transaction {
 
-    private static final Logger logger = Logger.getLogger(Transaction.class);
-
     private String hash;
     //@SerializedName("block_hash") Commented use this instead:
     // new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
@@ -109,10 +106,6 @@ public class Transaction {
     private List<Output> outputs = new ArrayList<Output>();
 
     public Transaction() {
-    }
-
-    public void post(Transaction transaction) {
-        logger.debug("Transaction Event Received: " + transaction);
     }
 
     @Override

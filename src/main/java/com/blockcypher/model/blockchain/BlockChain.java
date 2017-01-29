@@ -1,7 +1,6 @@
 package com.blockcypher.model.blockchain;
 
 import com.blockcypher.utils.gson.GsonFactory;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -52,8 +51,6 @@ import java.util.List;
  */
 public class BlockChain {
 
-    private static final Logger logger = Logger.getLogger(BlockChain.class);
-
     private String hash;
     private Long height;
     private String chain;
@@ -75,10 +72,6 @@ public class BlockChain {
     private String nextTxids;
 
     public BlockChain() {
-    }
-
-    public void post(BlockChain blockChain) {
-        logger.debug("BlockChain Event Received: " + blockChain);
     }
 
     @Override

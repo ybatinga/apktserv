@@ -1,0 +1,16 @@
+- Server    
+    - db 
+        -appversion
+    - ProjService: 
+        - AddressType
+        - URL
+    - persistence
+    - glassfish-web: 
+        - context-root
+    - BlockCypherConstants
+    - change file name in homolog
+
+- Android
+    - ProjService
+        - URLTYPE
+

@@ -19,18 +19,18 @@
     <class>apkt.model.Wallet</class>
     <class>apkt.model.AppVersion</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes><!--Order of elements inside <persistence-unit> is important, <exclude-unlisted-classes> should go after <class>-->
-    <properties>
+<!--    <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/apekato"/>
       <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
-    </properties>
-<!--    <properties>
+    </properties>-->
+    <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/apekato_prod"/>
       <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
-    </properties>-->
+    </properties>
 <!--    <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:8812/apekato_prod"/>
       <property name="javax.persistence.jdbc.password" value="DT%nU%wGb{ELn2M"/>
