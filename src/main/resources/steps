@@ -14,3 +14,28 @@
     - ProjService
         - URLTYPE
 
+<string name="empty_list_pymnt_mthd">Please provide details how to transfer money.
+    Payment method is either bank for wire transfers and/or user account
+    for money transfer websites. The payment method will be published along with your buy/sell order posts.
+    Payment method details, such as bank account number, can be provided via email.
+    You will receive a contact’s email address and phone number
+    when the contact sends you a trade request. Also provide other information you wish to tell about your trade.
+    Example: Please make request only when you can complete the payment with cash within 12 hours.</string>
+
+
+<string name="empty_list_pymnt_mthd">Please provide details how to transfer money.
+    Payment method is either bank for wire transfers and/or user account
+    for money transfer websites. The payment method will be published along with your buy/sell order posts.
+    Payment method details, such as bank account number, can be provided via email.
+    You will receive a contact’s email address and phone number
+    when the contact sends you a trade request. Also provide other information you wish to tell about your trade.
+    Example: Please make request only when you can complete the payment with cash within 12 hours.</string>
+
+
+<string name="empty_list_pymnt_mthd">Please provide details how to transfer money.
+        Payment method is either bank for wire transfers and/or user account
+        for money transfer websites. The payment method will be published along with your buy/sell order posts.
+        Payment method details, such as bank account number, can be provided via email.
+        You will receive a contact’s email address and phone number
+        when the contact sends you a trade request. Also provide other information you wish to tell about your trade.
+        Example: Please make request only when you can complete the payment with cash within 12 hours.</string>
