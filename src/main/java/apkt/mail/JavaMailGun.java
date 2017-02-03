@@ -25,7 +25,7 @@ public class JavaMailGun {
         
         clientResponse = webResource.type(MediaType.APPLICATION_FORM_URLENCODED).
                                                     post(ClientResponse.class, formData);
-        return StringVarsService.ok;
+        return StringVarsService.OK;
 
     }
 }

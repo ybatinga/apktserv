@@ -99,7 +99,7 @@ public class OrderWS {
                 em.close(); emf.close();
             }
             
-            return StringVarsService.ok;
+            return StringVarsService.OK;
         } catch (Exception ex) {
             JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", Order.OrderStatuses.ORDER_STATUS_OPEN, ex.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();

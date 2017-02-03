@@ -59,6 +59,6 @@ public class PasswordResetWS {
             return null;
         }
         
-        return StringVarsService.ok;
+        return StringVarsService.OK;
     }
 }

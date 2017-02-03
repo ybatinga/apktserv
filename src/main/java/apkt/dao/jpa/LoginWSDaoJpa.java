@@ -130,7 +130,7 @@ public class LoginWSDaoJpa {
         
         em.getTransaction().commit();
         
-        return StringVarsService.ok;
+        return StringVarsService.OK;
     }
     
     public static String updatePassAuxWord(
@@ -150,7 +150,7 @@ public class LoginWSDaoJpa {
         
         em.getTransaction().commit();
         
-        return StringVarsService.ok;
+        return StringVarsService.OK;
     }
     
     public static String updatePassword(
@@ -170,6 +170,6 @@ public class LoginWSDaoJpa {
         
         em.getTransaction().commit();
         
-        return StringVarsService.ok;
+        return StringVarsService.OK;
     }
 }

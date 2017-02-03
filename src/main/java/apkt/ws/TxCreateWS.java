@@ -17,6 +17,7 @@ import apkt.model.OrderPymntMthd;
 import apkt.model.OrderStatus;
 import apkt.dao.jpa.ServiceDaoJpa;
 import apkt.service.ProjService;
+import apkt.service.StringVarsService;
 import apkt.utils.BlockCypherConstants;
 import apkt.utils.StringUtil;
 import com.blockcypher.model.transaction.TransactionConstants;
@@ -196,7 +197,11 @@ public class TxCreateWS {
                 emailBodyMaker.append(addressMultisig.getAddress());
                 emailBodyMaker.append("</a>");
                 emailBodyMaker.append("<br></br><br></br>");
-                emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_confirmation") + " ");
+                if (order.getCurrencyCode().equals(StringVarsService.CURRENCY_CODE_BRL)){
+                    emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_confirmation_brl") + " ");
+                } else {
+                    emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_confirmation") + " ");                    
+                }
                 emailBodyMaker.append("<br></br><br></br>");
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_confirm_pymnt") + " ");
                 emailBodyMaker.append("<br></br><br></br>");
@@ -223,7 +228,11 @@ public class TxCreateWS {
                 emailBodyTaker.append(addressMultisig.getAddress());
                 emailBodyTaker.append("</a>");
                 emailBodyTaker.append("<br></br><br></br>");
-                emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_confirmation") + " ");
+                if (order.getCurrencyCode().equals(StringVarsService.CURRENCY_CODE_BRL)){
+                    emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_confirmation_brl") + " ");
+                } else {
+                    emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_confirmation") + " ");
+                }
                 emailBodyTaker.append("<br></br><br></br>");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_confirm_pymnt") + " ");
                 emailBodyTaker.append("<br></br><br></br>");
@@ -267,7 +276,11 @@ public class TxCreateWS {
                 emailBodyMaker.append(addressMultisig.getAddress());
                 emailBodyMaker.append("</a>");
                 emailBodyMaker.append("<br></br><br></br>");
-                emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_confirmation") + " ");
+                if (order.getCurrencyCode().equals(StringVarsService.CURRENCY_CODE_BRL)){
+                    emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_confirmation_brl") + " ");
+                }else {
+                    emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_confirmation") + " ");
+                }
                 emailBodyMaker.append("<br></br><br></br>");
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_confirm_pymnt") + " ");
                 emailBodyMaker.append("<br></br><br></br>");
@@ -289,14 +302,18 @@ public class TxCreateWS {
                 emailBodyTaker.append("<br></br><br></br>");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_notify_seller") + " ");
                 emailBodyTaker.append(order.getAmountNetBuy() + " ");
-                emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_pymnt_wallet") + " ");
+                emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_pymnt_wallet") + " ");
                 emailBodyTaker.append("<a href=https://blockchain.info/address/");
                 emailBodyTaker.append(addressMultisig.getAddress());
                 emailBodyTaker.append(">");
                 emailBodyTaker.append(addressMultisig.getAddress());
                 emailBodyTaker.append("</a>");
                 emailBodyTaker.append("<br></br><br></br>");
-                emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_confirmation") + " ");
+                if (order.getCurrencyCode().equals(StringVarsService.CURRENCY_CODE_BRL)){
+                    emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_confirmation_brl") + " ");
+                } else {
+                    emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_confirmation") + " ");
+                }
                 emailBodyTaker.append("<br></br><br></br>");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_confirm_pymnt") + " ");
                 emailBodyTaker.append("<br></br><br></br>");

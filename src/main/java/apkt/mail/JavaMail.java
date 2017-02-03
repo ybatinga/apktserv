@@ -65,7 +65,7 @@ public class JavaMail {
             e.printStackTrace();
             return e.toString();
         }
-        return StringVarsService.ok;
+        return StringVarsService.OK;
 
     }
 

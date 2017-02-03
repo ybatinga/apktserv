@@ -38,7 +38,7 @@ public class GenericDaoJpa {
             
         em.persist(object);
            
-        return StringVarsService.ok;
+        return StringVarsService.OK;
 
     }
     
@@ -65,14 +65,14 @@ public class GenericDaoJpa {
             em.merge(object);
         tx.commit();
 
-        return StringVarsService.ok;
+        return StringVarsService.OK;
     }
     
     public static <T> String updateWithoutTx(EntityManager em, Class<T> tClass, T object) throws RollbackException{
 
         em.merge(object);
 
-        return StringVarsService.ok;
+        return StringVarsService.OK;
 
     }
     

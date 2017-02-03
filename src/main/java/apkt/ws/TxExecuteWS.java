@@ -358,7 +358,7 @@ public class TxExecuteWS {
 //            threadExecutor.execute(javaMailThread_2);
 //            threadExecutor.shutdown();
             
-            stringResultJson.setResult(StringVarsService.ok);
+            stringResultJson.setResult(StringVarsService.OK);
             String res = new Gson().toJson(stringResultJson);        
             return res; 
             

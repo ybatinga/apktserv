@@ -28,7 +28,7 @@ public class RegUserDaoJpa extends GenericDaoJpa{
                 System.out.println("serianumber");
             }
         }
-        return StringVarsService.ok;
+        return StringVarsService.OK;
     }
 
 }

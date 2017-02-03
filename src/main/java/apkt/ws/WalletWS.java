@@ -77,7 +77,7 @@ public class WalletWS {
                 wallet.setId(Long.MIN_VALUE);
                 String result = GenericDaoJpa.insertWithoutTx(em, wallet);
 
-                if (result.equals(StringVarsService.ok)) {
+                if (result.equals(StringVarsService.OK)) {
 
                     walletlist = ServiceDaoJpa.getObjList(em, Wallet.class, wallet.getLoginId(), "loginId");
 

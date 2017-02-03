@@ -126,14 +126,14 @@ public class RsaCypher {
 //    }
 
     public static byte[] decryptData(byte[] data) throws IOException {
-        System.out.println("\n----------------DECRYPTION STARTED------------");
+//        System.out.println("\n----------------DECRYPTION STARTED------------");
         byte[] descryptedData = null;
         try {
             PrivateKey privateKey = readPrivateKeyFromFile(PRIVATE_KEY_FILE);
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             descryptedData = cipher.doFinal(data);
-            System.out.println("Decrypted Data: " + new String(descryptedData));
+//            System.out.println("Decrypted Data: " + new String(descryptedData));
         } catch (IllegalBlockSizeException ex) {
             Logger.getLogger(RsaCypher.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
@@ -145,7 +145,7 @@ public class RsaCypher {
         } catch (NoSuchPaddingException ex) {
             Logger.getLogger(RsaCypher.class.getName()).log(Level.SEVERE, null, ex);
         } 
-        System.out.println("----------------DECRYPTION COMPLETED------------");
+//        System.out.println("----------------DECRYPTION COMPLETED------------");
         return descryptedData;
     }
 

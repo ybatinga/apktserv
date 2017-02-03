@@ -69,7 +69,7 @@ public class PasswordForgotWS {
                 threadExecutor.shutdown();
                 
                 em.close(); emf.close();
-                return StringVarsService.ok;
+                return StringVarsService.OK;
             } else {
                 em.close(); emf.close();
                 return null;

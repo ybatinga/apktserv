@@ -63,7 +63,7 @@ public class PymntMthdWS {
                 pymntMthd.setId(Long.MIN_VALUE);
                 String result = GenericDaoJpa.insertWithoutTx(em, pymntMthd);
 
-                if (result.equals(StringVarsService.ok)) {
+                if (result.equals(StringVarsService.OK)) {
 
                     list = ServiceDaoJpa.getObjList(em, PymntMthd.class, pymntMthd.getLoginId(), "loginId", pymntMthd.getCurrencyCode(), "currencyCode");
 
