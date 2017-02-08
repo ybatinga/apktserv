@@ -5,13 +5,14 @@ import java.util.ResourceBundle;
 
 public class ProjService {
     
-    public static final String URL = UrlType.HTTP_PROD;
+    public static final String URL = UrlType.HTTP_HOMOLOG;
     public static final String BLOCKCYPHERTOKEN = "15cec3f0a8754248af469151f249b5d3";
-    public static final String ADDRESS = AddressType.MAIN;
+    public static final String ADDRESS = AddressType.BLOCKCYPHERTEST;
     public static String LANGUAGE;
 
     private class AddressType{
-        public static final String TEST = "C9uvjNrozYgX41C7yKdczFVz5qepHW1Yes";
+        public static final String BLOCKCYPHERTEST = "C9uvjNrozYgX41C7yKdczFVz5qepHW1Yes";
+        public static final String TESTNET = "n4ezJuxz1UYRurYdqD68DSbNijq51Uv73y"; // Private Key (Wallet Import Format): 92NDgKAN43Md1HsTVN3ZX8K2h2mK4hbyWbcGzTZpeZ6Dckc7Q5x
         public static final String MAIN = "1D9Yo3PyXbNJ6osgQnbEQf4wn8kZaPtSPc";
     }
     
@@ -20,8 +21,8 @@ public class ProjService {
 //        public static final String PROD = "prod";
 //    }
     public static class UrlType{
-        public static final String HTTP_PROD = "https://www.apekato.com/webresources/";
-        public static final String HTTP_HOMOLOG = "https://www.apekato.com/homolog/webresources/";        
+        public static final String HTTP_PROD = "https://apekato.com/webresources/";
+        public static final String HTTP_HOMOLOG = "https://apekato.com/homolog/webresources/";        
     }  
     
     public static ResourceBundle RB;    

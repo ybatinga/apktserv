@@ -100,7 +100,7 @@ public class LoginWSDaoJpa {
             MobileInfo mobileInfo = q.getSingleResult();
             return mobileInfo;
 
-        // do not change this catch. And do not add throw NoResultException in the method.
+        // do not change this catch. And do not append throw NoResultException to the method.
         // There is a verification right after this loginCheck method call that 
         // checks the return result
         } catch (NoResultException n) {

@@ -23,10 +23,10 @@ public class FaucetTest {
             HttpPost post = new HttpPost(postUrl);
             JsonObject object = new JsonObject();
             String address =
-"DpjS6qRBBnWB35FAd4BSD9SjpawtmwAAjn"
+"DYJBZSfwkXP9if8UHpQWTVjw2GKcTFgEWv"
                     ;
             object.addProperty("address", address);
-            object.addProperty("amount", 3045000);
+            object.addProperty("amount", 3030000);
             StringEntity postingString = new StringEntity(object.toString());//convert your pojo to   json
             post.setEntity(postingString);
             post.setHeader("Content-type", "application/json");

@@ -8,6 +8,6 @@
     </property>
   </jsp-config>
   <!--context-root is not needed when virtual server is setup-->
-  <!--<context-root>homolog</context-root>-->
-  <context-root>/</context-root>
+  <context-root>homolog</context-root>
+  <!--<context-root>/</context-root>-->
 </glassfish-web-app>

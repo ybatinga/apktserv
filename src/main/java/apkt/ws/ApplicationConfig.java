@@ -50,7 +50,7 @@ public class ApplicationConfig extends Application {
         resources.add(apkt.ws.TxCreateWS.class);
         resources.add(apkt.ws.TxExecuteWS.class);
         resources.add(apkt.ws.WalletWS.class);
-        resources.add(apkt.ws.WalletWS.class);
+        resources.add(apkt.ws.WalletDeleteWS.class);
         resources.add(apkt.ws.WebHookWS.class);
     }
     
