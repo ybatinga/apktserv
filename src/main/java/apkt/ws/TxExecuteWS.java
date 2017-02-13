@@ -132,7 +132,7 @@ public class TxExecuteWS {
                 }
             }            
             for (Address address : addressList){
-                if (address.getType().equals(Address.AddressType.ADDRESS_TYPE_ESCROW)) {
+                if (address.getType().equals(Address.AddressType.ADDRESS_TYPE_ARBITRATOR)) {
                     pubKeyMultiSigList.add(address.getPublicAddress()); 
                     privKeyMultiSigList.add(address.getPrivateAddress());
                 }

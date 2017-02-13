@@ -137,7 +137,7 @@ public class TxCreateWS {
 //            paymentForwardRes.setOrderId(order.getId());
             addressMaker.setType(Address.AddressType.ADDRESS_TYPE_MAKER);            
             addressTaker.setType(Address.AddressType.ADDRESS_TYPE_TAKER);
-            addressEscrow.setType(Address.AddressType.ADDRESS_TYPE_ESCROW);
+            addressEscrow.setType(Address.AddressType.ADDRESS_TYPE_ARBITRATOR);
             addressMultisig.setType(Address.AddressType.ADDRESS_TYPE_MULTISIG);      
             addressMultisig.setWebhookId(gson);
 //            paymentForwardRes.setWebhookId(event.getId());
@@ -151,6 +151,7 @@ public class TxCreateWS {
 //                String result_5 = GenericDaoJpa.insertWithoutTx(em, paymentForwardRes);
                 // orderId for OrderWallet object must be set since there is a reference for it in order_wallet
                 order.getOrderWalletId().setOrderId(order.getId());
+                order.setEscrowAddress(addressMultisig.getAddress());
                 
                 order.setUpdatedAt(date);
                 String result_6 = GenericDaoJpa.updateWithoutTx(em, Order.class, order);

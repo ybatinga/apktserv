@@ -99,6 +99,9 @@ public class Order implements Serializable {
     @Column(name = "currency_code")
     private String currencyCode;
     
+    @Column(name = "escrow_address")
+    private String escrowAddress;
+    
     @JoinColumn(name = "order_wallet_id", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.PERSIST)
     private OrderWallet orderWalletId;
@@ -247,6 +250,14 @@ public class Order implements Serializable {
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+    
+    public String getEscrowAddress() {
+        return escrowAddress;
+    }
+
+    public void setEscrowAddress(String escrowAddress) {
+        this.escrowAddress = escrowAddress;
     }
     
     public OrderWallet getOrderWalletId() {

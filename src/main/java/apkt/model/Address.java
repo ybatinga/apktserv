@@ -249,7 +249,7 @@ public class Address implements Serializable {
 
         public static final String ADDRESS_TYPE_MAKER = "MAKER";
         public static final String ADDRESS_TYPE_TAKER = "TAKER";
-        public static final String ADDRESS_TYPE_ESCROW = "ESCROW";
+        public static final String ADDRESS_TYPE_ARBITRATOR = "ARBITRATOR";
         public static final String ADDRESS_TYPE_MULTISIG = "MULTISIG";
     }
 }
