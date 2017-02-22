@@ -13,6 +13,7 @@ import apkt.service.ProjService;
 import apkt.service.StringVarsService;
 import com.google.gson.Gson;
 import apkt.utils.BlockCypherConstants;
+import apkt.utils.StringUtil;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ public class WalletWS {
             EntityManager em = emf.createEntityManager();
 
             Login loginAuth = ServiceDaoJpa.authUser(em, listWalletJson.getAuthAux());
+            StringUtil.setLanguageResource(loginAuth.getLang());
             // update language 
             GenericDaoJpa.update(em, Login.class, loginAuth);
             listWalletJson.setAuthAux(null);

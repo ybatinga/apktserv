@@ -30,7 +30,12 @@ public class DeleteWebhook {
             
             WebhookService webhookService = blockCypherContext.getWebhookService();
 //            Event event = webhookService.createWebHook(Event.EventType.DOUBLE_SPEND_TX, "C5zH2a3hrwbLH8dSzZqXtZbgQWXfYDVg8z", ProjService.URL.concat("webhook"));
-            List o = HttpService.getHttps("https://api.blockcypher.com/v1/bcy/test/hooks?token="+ProjService.BLOCKCYPHERTOKEN, List.class);
+            List o = HttpService.getHttps(BlockCypherConstants.BLOCK_CYPHER_ENDPOINT 
+                    + "/" + BlockCypherConstants.VERSION_V1 
+                    + "/" + BlockCypherConstants.CURRENCY_BTC
+                    + "/" + BlockCypherConstants.NETWORK
+                    + "/hooks?token="
+                    + ProjService.BLOCKCYPHERTOKEN, List.class);
             List<ListWebhookIdJson.WebhookId> webhookIdList = (List<ListWebhookIdJson.WebhookId>) o;
             for (int i = 0; i < o.size(); i++){
                 LinkedTreeMap<String, String> sm = (LinkedTreeMap<String, String>) o.get(i);

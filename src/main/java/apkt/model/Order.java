@@ -316,5 +316,7 @@ public class Order implements Serializable {
         public static final String ORDER_LIST_TYPE_TRANSACTIONS = "TRANSACTIONS";
         public static final String ORDER_LIST_TYPE_BUY = "BUY";
         public static final String ORDER_LIST_TYPE_SELL = "SELL";
+        public static final String ORDER_LIST_TYPE_BUY_PUBLIC = "BUY_PUBLIC";
+        public static final String ORDER_LIST_TYPE_SELL_PUBLIC = "SELL_PUBLIC";
     }
 }

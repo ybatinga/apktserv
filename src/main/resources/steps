@@ -8,6 +8,8 @@
     - glassfish-web: 
         - context-root
     - BlockCypherConstants
+        - netbeans
+        - android studio
     - change file name in homolog
 
 - Android

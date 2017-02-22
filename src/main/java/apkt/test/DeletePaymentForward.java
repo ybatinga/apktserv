@@ -21,7 +21,12 @@ public class DeletePaymentForward {
             
             PaymentForwardService paymentForwardService = blockCypherContext.getPaymentForwardService();
             
-            List o = HttpService.getHttps("https://api.blockcypher.com/v1/bcy/test/payments?token="+ProjService.BLOCKCYPHERTOKEN, List.class);
+            List o = HttpService.getHttps(BlockCypherConstants.BLOCK_CYPHER_ENDPOINT 
+                    + "/" + BlockCypherConstants.VERSION_V1 
+                    + "/" + BlockCypherConstants.CURRENCY_BTC
+                    + "/" + BlockCypherConstants.NETWORK
+                    + "/payments?token="
+                    + ProjService.BLOCKCYPHERTOKEN, List.class);
             
             for (int i = 0; i < o.size(); i++){
                 LinkedTreeMap<String, String> sm = (LinkedTreeMap<String, String>) o.get(i);

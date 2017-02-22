@@ -21,10 +21,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 
-@Path("orderList")
-public class OrderListWS {
+@Path("orderListMarket")
+public class OrderListMarketWS {
 
-    public OrderListWS() {
+    public OrderListMarketWS() {
     }
 
 //    @GET
@@ -37,22 +37,11 @@ public class OrderListWS {
     public String getJson(String jsonclass) {
         try {
             jsonclass = URLDecoder.decode(jsonclass, "UTF-8");
-//            CypherJson cypherJson = new Gson().fromJson(jsonclass, CypherJson.class);
-//            byte[] b = RsaCypher.decryptData(cypherJson.getEncrypted());
-//            AuthAux authAux = new Gson().fromJson(new String(b), AuthAux.class);
-            
+           
             ListOrderJson listOrderJson = new Gson().fromJson(jsonclass, ListOrderJson.class);
             
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
             EntityManager em = emf.createEntityManager();
-
-            Login loginAuth = ServiceDaoJpa.authUser(em, listOrderJson.getAuthAux());
-            // update language 
-            GenericDaoJpa.update(em, Login.class, loginAuth);
-            listOrderJson.setAuthAux(null);
-            if (loginAuth == null){
-                return null;
-            }
             
             List<Order> list = ServiceDaoJpa.getOrderList(em, listOrderJson);
             
