@@ -42,11 +42,9 @@ public class OpReturn implements Serializable {
         this.id = id;
     }
 
-    public OpReturn(Long id, String text, String address, Date dateOpReturn) {
-        this.id = id;
+    public OpReturn(String text, String address) {
         this.text = text;
         this.address = address;
-        this.dateOpReturn = dateOpReturn;
     }
 
     public Long getId() {
