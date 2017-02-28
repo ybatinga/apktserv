@@ -49,9 +49,7 @@ public class OpReturnRequestWS {
             OpReturnJson opReturnJson = new Gson().fromJson(jsonclass, OpReturnJson.class);
             OpReturn opReturn = opReturnJson.getOpReturn();
             opReturn.setDateOpReturn(new Date());
-            if (OpReturnService.bitcoin.isRunning()){
-                boolean sfa = true;
-            }
+           
             opReturn.setAddress(OpReturnService.bitcoin.wallet().freshReceiveAddress().toString());
             
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");

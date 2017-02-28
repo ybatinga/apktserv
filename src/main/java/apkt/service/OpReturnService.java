@@ -28,34 +28,37 @@ public class OpReturnService {
 
     public static void main(String[] args) throws IOException {
 
-        if (!bitcoin.isRunning()) {
-            return;
-        }
-
         // Make log output concise.
         BriefLogFormatter.init();
         // Create the app kit. It won't do any heavyweight initialization until after we start it.
         setupWalletKit(null);
 
-        if (bitcoin.isChainFileLocked()) {
-            return;
-        }
-        bitcoin.addListener(new Service.Listener() {
+        if (!bitcoin.isChainFileLocked()) {
+            bitcoin.addListener(new Service.Listener() {
 
-            @Override
-            public void running() {
-                super.running();
-                try {
-                    writeTx();
-                } catch (IOException ex) {
-                    Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InsufficientMoneyException ex) {
-                    Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                @Override
+                public void running() {
+                    super.running();
+                    try {
+                        writeTx();
+                    } catch (IOException ex) {
+                        Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InsufficientMoneyException ex) {
+                        Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
 
-        }, OpReturnRunnable::runLater);
-        bitcoin.startAsync();
+            }, Runnable::run);
+            bitcoin.addListener(new Service.Listener() {
+                @Override
+                public void running() {
+                    super.running();
+
+                }
+            }, OpReturnRunnable::runLater);
+            bitcoin.startAsync();
+        }
+        
     }
 
     public static void setupWalletKit(DeterministicSeed seed) {
@@ -72,28 +75,25 @@ public class OpReturnService {
 
         bitcoin.setBlockingStartup(false);
 
-        if (seed != null) {
-            bitcoin.restoreWalletFromSeed(seed);
-        }
-
     }
 
     private static void writeTx() throws IOException, InsufficientMoneyException {
 
         Address address = bitcoin.wallet().currentReceiveAddress();
-        byte[] b = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas.".getBytes("UTF-8");
-        // Create a tx with an OP_RETURN output
-        Transaction tx = new Transaction(params);
-        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(b));
+        System.out.println("after: " + address.toString());
+//        byte[] b = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas.".getBytes("UTF-8");
+//        // Create a tx with an OP_RETURN output
+//        Transaction tx = new Transaction(params);
+//        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(b));
+//
+//        System.out.println("before: " + bitcoin.wallet().getBalance().toString());
+//
+//        // Send it to the Bitcoin network
+//        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
+//
+//        System.out.println("after: " + bitcoin.wallet().getBalance().toString());
 
-        System.out.println("before: " + bitcoin.wallet().getBalance().toString());
-
-        // Send it to the Bitcoin network
-        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
-
-        System.out.println("after: " + bitcoin.wallet().getBalance().toString());
-
-        bitcoin.wallet().addChangeEventListener(OpReturnRunnable::runLater, new WalletChangeEventListener() {
+        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
             @Override
             public void onWalletChanged(Wallet wallet) {
                 update(wallet);
