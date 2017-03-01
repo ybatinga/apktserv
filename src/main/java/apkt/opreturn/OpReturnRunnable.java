@@ -9,28 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class OpReturnRunnable {
 
     private static CountDownLatch startupLatch = new CountDownLatch(1);
-    private static AtomicInteger pendingRunnables = new AtomicInteger(0);
-    private final static Object runLaterLock = new Object();
 
     public static void runLater(final Runnable r) {
-        runLater(r, false);
-    }
-
-    private static void runLater(final Runnable r, boolean exiting) {
-        pendingRunnables.incrementAndGet();
         waitForStart();
-        synchronized (runLaterLock) {
-
-            final AccessControlContext acc = AccessController.getContext();
-                try {
-                    AccessController.doPrivileged((PrivilegedAction<Void>) () ->{
-                        r.run();
-                        return null;
-                    }, acc);
-                } finally {
-                    pendingRunnables.decrementAndGet();
-                }
-        }
     }
 
     private static void waitForStart() {

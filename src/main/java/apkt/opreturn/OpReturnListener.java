@@ -1,4 +1,4 @@
-package apkt.service;
+package apkt.opreturn;
 
 import apkt.opreturn.OpReturnRunnable;
 import apkt.ws.OpReturnRequestWS;
@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class OpReturnService {
+public class OpReturnListener {
 
 //    public static NetworkParameters params = MainNetParams.get();
     private static NetworkParameters params = TestNet3Params.get();
@@ -26,29 +26,29 @@ public class OpReturnService {
             + params.getPaymentProtocolId();
 
     private WalletAppKit bitcoin;
-    private static OpReturnService opReturnService;
+    private static OpReturnListener opReturnListener;
     
-    private OpReturnService(){
+    private OpReturnListener(){
     }
     
-    public static OpReturnService getInstance(){
-        if(opReturnService == null){
-            opReturnService = new OpReturnService();
+    public static OpReturnListener getInstance(){
+        if(opReturnListener == null){
+            opReturnListener = new OpReturnListener();
             
         }
         try {
-                opReturnService.write(null);
+                opReturnListener.listener(null);
             } catch (IOException ex) {
-                Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(OpReturnListener.class.getName()).log(Level.SEVERE, null, ex);
             }
-        return opReturnService;
+        return opReturnListener;
     }
     
     public static void main(String[] args) throws IOException {
-        OpReturnService opReturnService = OpReturnService.getInstance();
+        OpReturnListener opReturnListener = OpReturnListener.getInstance();        
     }
     
-    public void write(String msg) throws IOException {
+    public void listener(String msg) throws IOException {
 
         // Make log output concise.
         BriefLogFormatter.init();
@@ -56,18 +56,18 @@ public class OpReturnService {
         setupWalletKit(null);
 //        Address address = getBitcoin().wallet().currentReceiveAddress();
 
-        if (!bitcoin.isChainFileLocked()) {
+        if (!bitcoin.isRunning()) {
             bitcoin.addListener(new Service.Listener() {
 
                 @Override
                 public void running() {
                     super.running();
                     try {
-                        writeTx();
+                        listenTx();
                     } catch (IOException ex) {
-                        Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(OpReturnListener.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (InsufficientMoneyException ex) {
-                        Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(OpReturnListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 
@@ -94,38 +94,19 @@ public class OpReturnService {
         };
 //        getBitcoin().setBlockingStartup(false);
     }
-    
-    public String getFreshReceiveAddress() {
-        setupWalletKit(null);
-        String address = bitcoin.wallet().freshReceiveAddress().toString();
-        return address;
 
-    }
-
-    private void writeTx() throws IOException, InsufficientMoneyException {
-
-        byte[] b = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas.".getBytes("UTF-8");
-        // Create a tx with an OP_RETURN output
-        Transaction tx = new Transaction(params);
-        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(b));
-
-        System.out.println("before: " + bitcoin.wallet().getBalance().toString());
-
-        // Send it to the Bitcoin network
-        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
-//
-//        System.out.println("after: " + bitcoin.wallet().getBalance().toString());
-
+    private void listenTx() throws IOException, InsufficientMoneyException {
+        String address = bitcoin.wallet().currentReceiveAddress().toString();
         bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
             @Override
             public void onWalletChanged(Wallet wallet) {
-                update(wallet);
+                listen(wallet);
             }
         });
 
     }
 
-    public void update(Wallet wallet) {
+    public void listen(Wallet wallet) {
         Coin coin = wallet.getBalance();
         System.out.println("balance: " + wallet.getBalance().toString());
         Address currentReceiveAddress = wallet.currentReceiveAddress();
