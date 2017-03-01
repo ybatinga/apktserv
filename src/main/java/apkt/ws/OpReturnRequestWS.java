@@ -9,6 +9,7 @@ import apkt.service.OpReturnService;
 import apkt.service.ProjService;
 import apkt.service.StringVarsService;
 import com.google.gson.Gson;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -28,10 +29,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.params.TestNet3Params;
 
 @Path("opReturnRequestWS")
 public class OpReturnRequestWS {
-
+    
+    private static NetworkParameters params = TestNet3Params.get();
+    private static final String TWININGS = "Twinings".replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
+            + params.getPaymentProtocolId();
+    private WalletAppKit bitcoin;
+    
     public OpReturnRequestWS() {
     }
 
@@ -49,8 +58,12 @@ public class OpReturnRequestWS {
             OpReturnJson opReturnJson = new Gson().fromJson(jsonclass, OpReturnJson.class);
             OpReturn opReturn = opReturnJson.getOpReturn();
             opReturn.setDateOpReturn(new Date());
-           
-            opReturn.setAddress(OpReturnService.bitcoin.wallet().freshReceiveAddress().toString());
+            opReturn.setText("test");
+            OpReturnService opReturnService = OpReturnService.getInstance();
+
+            String address = opReturnService.getFreshReceiveAddress();
+
+            opReturn.setAddress(address);
             
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
             EntityManager em = emf.createEntityManager();
@@ -103,4 +116,18 @@ public class OpReturnRequestWS {
         } 
     }
 
+    public void setupWalletKit() {
+        // If seed is non-null it means we are restoring from backup.
+        if (bitcoin == null)
+        bitcoin = new WalletAppKit(params, new File("."), TWININGS) {
+            @Override
+            protected void onSetupCompleted() {
+                // Don't make the user wait for confirmations for now, as the intention is they're sending it
+                // their own money!
+                bitcoin.wallet().allowSpendingUnconfirmedTransactions();
+
+            }
+        };
+    
+    }
 }

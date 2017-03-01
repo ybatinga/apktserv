@@ -1,6 +1,7 @@
 package apkt.service;
 
 import apkt.opreturn.OpReturnRunnable;
+import apkt.ws.OpReturnRequestWS;
 import com.google.common.util.concurrent.Service;
 import org.bitcoinj.core.*;
 import org.bitcoinj.kits.WalletAppKit;
@@ -20,20 +21,43 @@ import java.util.logging.Logger;
 public class OpReturnService {
 
 //    public static NetworkParameters params = MainNetParams.get();
-    public static NetworkParameters params = TestNet3Params.get();
+    private static NetworkParameters params = TestNet3Params.get();
     private static final String TWININGS = "Twinings".replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
             + params.getPaymentProtocolId();
 
-    public static WalletAppKit bitcoin;
-
+    private WalletAppKit bitcoin;
+    private static OpReturnService opReturnService;
+    
+    private OpReturnService(){
+    }
+    
+    public static OpReturnService getInstance(){
+        if(opReturnService == null){
+            opReturnService = new OpReturnService();
+            
+        }
+        try {
+                opReturnService.write(null);
+            } catch (IOException ex) {
+                Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return opReturnService;
+    }
+    
     public static void main(String[] args) throws IOException {
+        OpReturnService opReturnService = OpReturnService.getInstance();
+        opReturnService.write(null);
+    }
+    
+    public void write(String msg) throws IOException {
 
         // Make log output concise.
         BriefLogFormatter.init();
         // Create the app kit. It won't do any heavyweight initialization until after we start it.
         setupWalletKit(null);
+//        Address address = getBitcoin().wallet().currentReceiveAddress();
 
-        if (!bitcoin.isChainFileLocked()) {
+        if (!bitcoin.isRunning()) {
             bitcoin.addListener(new Service.Listener() {
 
                 @Override
@@ -57,12 +81,15 @@ public class OpReturnService {
                 }
             }, OpReturnRunnable::runLater);
             bitcoin.startAsync();
+            bitcoin.awaitRunning();
+            
         }
         
     }
 
-    public static void setupWalletKit(DeterministicSeed seed) {
+    public void setupWalletKit(DeterministicSeed seed) {
         // If seed is non-null it means we are restoring from backup.
+        if (bitcoin == null)
         bitcoin = new WalletAppKit(params, new File("."), TWININGS) {
             @Override
             protected void onSetupCompleted() {
@@ -73,11 +100,18 @@ public class OpReturnService {
             }
         };
 
-        bitcoin.setBlockingStartup(false);
+//        getBitcoin().setBlockingStartup(false);
+
+    }
+    
+    public String getFreshReceiveAddress() {
+        setupWalletKit(null);
+        String address = bitcoin.wallet().freshReceiveAddress().toString();
+        return address;
 
     }
 
-    private static void writeTx() throws IOException, InsufficientMoneyException {
+    private void writeTx() throws IOException, InsufficientMoneyException {
 
         Address address = bitcoin.wallet().currentReceiveAddress();
         System.out.println("after: " + address.toString());
@@ -93,26 +127,26 @@ public class OpReturnService {
 //
 //        System.out.println("after: " + bitcoin.wallet().getBalance().toString());
 
-        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
-            @Override
-            public void onWalletChanged(Wallet wallet) {
-                update(wallet);
-            }
-        });
+//        getBitcoin().wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
+//            @Override
+//            public void onWalletChanged(Wallet wallet) {
+//                update(wallet);
+//            }
+//        });
 
     }
 
-    public static void update(Wallet wallet) {
+    public void update(Wallet wallet) {
         Coin coin = wallet.getBalance();
         System.out.println("balance: " + wallet.getBalance().toString());
         Address currentReceiveAddress = wallet.currentReceiveAddress();
         System.out.println("currentReceiveAddress_1: " + currentReceiveAddress.toString());
         Address currentReceiveAddress_2 = wallet.currentReceiveAddress();
         System.out.println("currentReceiveAddress_2: " + currentReceiveAddress_2.toString());
-        Address freshReceiveAddress = wallet.freshReceiveAddress();
-        System.out.println("freshReceiveAddress_1: " + freshReceiveAddress.toString());
-        Address freshReceiveAddress_2 = wallet.freshReceiveAddress();
-        System.out.println("freshReceiveAddress_2: " + freshReceiveAddress.toString());
+//        Address freshReceiveAddress = wallet.freshReceiveAddress();
+//        System.out.println("freshReceiveAddress_1: " + freshReceiveAddress.toString());
+//        Address freshReceiveAddress_2 = wallet.freshReceiveAddress();
+//        System.out.println("freshReceiveAddress_2: " + freshReceiveAddress.toString());
         Address currentChangeAddress = wallet.currentChangeAddress();
         System.out.println("currentChangeAddress_1: " + currentChangeAddress.toString());
         Address currentChangeAddress_2 = wallet.currentChangeAddress();
@@ -146,5 +180,4 @@ public class OpReturnService {
         }
 
     }
-
 }
