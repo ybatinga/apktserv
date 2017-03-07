@@ -30,16 +30,15 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(apkt.ws.CurrencyCodeWS.class);
-        resources.add(apkt.ws.OrderListWS.class);
         resources.add(apkt.ws.GenericGet.class);
         resources.add(apkt.ws.GenericPost.class);
         resources.add(apkt.ws.GenericResource.class);
         resources.add(apkt.ws.GenericResourceHttpDelete.class);
         resources.add(apkt.ws.LoginWS.class);
         resources.add(apkt.ws.OpReturnRequestWS.class);
-        resources.add(apkt.ws.OrderWS.class);
-        resources.add(apkt.ws.OrderListWS.class);
         resources.add(apkt.ws.OrderListMarketWS.class);
+        resources.add(apkt.ws.OrderListWS.class);
+        resources.add(apkt.ws.OrderWS.class);
         resources.add(apkt.ws.PasswordCodeWS.class);
         resources.add(apkt.ws.PasswordForgotWS.class);
         resources.add(apkt.ws.PasswordResetWS.class);
@@ -51,8 +50,8 @@ public class ApplicationConfig extends Application {
         resources.add(apkt.ws.TxCancelWS.class);
         resources.add(apkt.ws.TxCreateWS.class);
         resources.add(apkt.ws.TxExecuteWS.class);
-        resources.add(apkt.ws.WalletWS.class);
         resources.add(apkt.ws.WalletDeleteWS.class);
+        resources.add(apkt.ws.WalletWS.class);
         resources.add(apkt.ws.WebHookWS.class);
     }
     

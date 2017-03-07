@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.blockcypher</groupId>
+    <groupId>apkt</groupId>
     <artifactId>apktserv</artifactId>
     <version>1</version>
     <packaging>war</packaging>
@@ -15,7 +15,7 @@
         <eclipselink.version>2.5.2</eclipselink.version>
     </properties>
     
-    <dependencies>        
+    <dependencies>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -42,6 +42,10 @@
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
         </dependency>
+<!--        this is a blockcypher (?for Eckey?) dependency that was conflicting with 
+        bitcoinj's dependency. That's why is was commented. Still there is a need
+        to test multisig transactions to check if commenting this dependency has
+        impacted multisig transactions-->
 <!--        <dependency>
             <groupId>com.madgag</groupId>
             <artifactId>sc-light-jdk15on</artifactId>
@@ -62,6 +66,17 @@
             <artifactId>jersey-bundle</artifactId>
             <version>1.17</version>
         </dependency>
+<!--        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.0-RC1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>commonj.sdo</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>-->
         <!--beginning of eclipselink dependencies-->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -124,6 +139,14 @@
             <version>0.14.4</version>
             <scope>compile</scope>
         </dependency>
+<!--        <dependency>
+            <groupId>org.bitcoinj</groupId>
+            <artifactId>bitcoinj-core</artifactId>
+            <version>0.14.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/bitcoinj-core-0.14.4-bundled.jar</systemPath>
+        </dependency>-->
+        
     </dependencies>
 
     <build>
@@ -173,7 +196,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>make-a-jar</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+<!--                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>apkt.opreturn.OpReturnMain</mainClass>
+                            adds maven dependencies as libraries to jar
+                            <addClasspath>true</addClasspath> 
+                            <classpathPrefix>apktserv-1/WEB-INF/lib</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>-->
+            </plugin>
         </plugins>
     </build>
-
 </project>

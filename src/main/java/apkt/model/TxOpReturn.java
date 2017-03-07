@@ -13,8 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "op_return")
-public class OpReturn implements Serializable {
+@Table(name = "tx_op_return")
+public class TxOpReturn implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,14 +39,14 @@ public class OpReturn implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOpReturn;
 
-    public OpReturn() {
+    public TxOpReturn() {
     }
 
-    public OpReturn(Long id) {
+    public TxOpReturn(Long id) {
         this.id = id;
     }
 
-    public OpReturn(String text, String address, String status, Date dateOpReturn) {
+    public TxOpReturn(String text, String address, String status, Date dateOpReturn) {
         this.text = text;
         this.address = address;
         this.status = status;
@@ -92,14 +92,5 @@ public class OpReturn implements Serializable {
     public void setDateOpReturn(Date dateOpReturn) {
         this.dateOpReturn = dateOpReturn;
     }
-   
-    public static class OpReturnStatus {
-        public static final String OP_RETURN_STATUS_INVALID_DATA = "INVALID_DATA";
-        public static final String OP_RETURN_STATUS_WAITING_TX = "WAITING_TX";
-        public static final String OP_RETURN_STATUS_REGISTERED = "REGISTERED";
-    }
-    
-    public static class OpReturnInvalidDataList {
-        public static final int SIZE = 5;
-    }
+
 }

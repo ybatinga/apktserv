@@ -1,5 +1,7 @@
 package apkt.service;
 
+import apkt.dao.jpa.GenericDaoJpa;
+import apkt.model.OpReturn;
 import apkt.opreturn.OpReturnRunnable;
 import apkt.ws.OpReturnRequestWS;
 import com.google.common.util.concurrent.Service;
@@ -17,35 +19,20 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class OpReturnService {
 
 //    public static NetworkParameters params = MainNetParams.get();
-    private static NetworkParameters params = TestNet3Params.get();
+    public static NetworkParameters params = TestNet3Params.get();
     private static final String TWININGS = "Twinings".replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
             + params.getPaymentProtocolId();
 
-    private WalletAppKit bitcoin;
-    private static OpReturnService opReturnService;
+    public static WalletAppKit bitcoin;
     
     private OpReturnService(){
-    }
-    
-    public static OpReturnService getInstance(){
-        if(opReturnService == null){
-            opReturnService = new OpReturnService();
-            
-        }
-        try {
-                opReturnService.write(null);
-            } catch (IOException ex) {
-                Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        return opReturnService;
-    }
-    
-    public static void main(String[] args) throws IOException {
-        OpReturnService opReturnService = OpReturnService.getInstance();
     }
     
     public void write(String msg) throws IOException {
@@ -53,7 +40,7 @@ public class OpReturnService {
         // Make log output concise.
         BriefLogFormatter.init();
         // Create the app kit. It won't do any heavyweight initialization until after we start it.
-        setupWalletKit(null);
+        setupWalletKit();
 //        Address address = getBitcoin().wallet().currentReceiveAddress();
 
         if (!bitcoin.isChainFileLocked()) {
@@ -80,7 +67,7 @@ public class OpReturnService {
         
     }
 
-    public void setupWalletKit(DeterministicSeed seed) {
+    public static void setupWalletKit() {
         // If seed is non-null it means we are restoring from backup.
         if (bitcoin == null)
         bitcoin = new WalletAppKit(params, new File("."), TWININGS) {
@@ -89,39 +76,53 @@ public class OpReturnService {
                 // Don't make the user wait for confirmations for now, as the intention is they're sending it
                 // their own money!
                 bitcoin.wallet().allowSpendingUnconfirmedTransactions();
-
             }
         };
-//        getBitcoin().setBlockingStartup(false);
     }
     
     public String getFreshReceiveAddress() {
-        setupWalletKit(null);
+        setupWalletKit();
         String address = bitcoin.wallet().freshReceiveAddress().toString();
         return address;
 
     }
 
     private void writeTx() throws IOException, InsufficientMoneyException {
+        String address = bitcoin.wallet().freshReceiveAddress().toString();
+        OpReturn opReturn = new OpReturn();
+                    opReturn.setDateOpReturn(new Date());
+                    opReturn.setText("test");
+                    opReturn.setAddress("address");
 
-        byte[] b = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas.".getBytes("UTF-8");
-        // Create a tx with an OP_RETURN output
-        Transaction tx = new Transaction(params);
-        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(b));
+                    EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+                    EntityManager em = emf.createEntityManager();
 
-        System.out.println("before: " + bitcoin.wallet().getBalance().toString());
+                        try {
+                            GenericDaoJpa.insert(em, opReturn);
+                        } catch (Exception ex) {
+                            Logger.getLogger(OpReturnService.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
-        // Send it to the Bitcoin network
-        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
+                    em.close(); emf.close();
+                    
+//        byte[] b = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas.".getBytes("UTF-8");
+//        // Create a tx with an OP_RETURN output
+//        Transaction tx = new Transaction(params);
+//        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(b));
+//
+//        System.out.println("before: " + bitcoin.wallet().getBalance().toString());
+//
+//        // Send it to the Bitcoin network
+//        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
 //
 //        System.out.println("after: " + bitcoin.wallet().getBalance().toString());
 
-        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
-            @Override
-            public void onWalletChanged(Wallet wallet) {
-                update(wallet);
-            }
-        });
+//        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
+//            @Override
+//            public void onWalletChanged(Wallet wallet) {
+//                update(wallet);
+//            }
+//        });
 
     }
 

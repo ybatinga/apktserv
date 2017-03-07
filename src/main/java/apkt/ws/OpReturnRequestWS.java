@@ -1,13 +1,10 @@
 package apkt.ws;
 
-import apkt.dao.jpa.GenericDaoJpa;
-import apkt.dao.jpa.ServiceDaoJpa;
 import apkt.json.OpReturnJson;
 import apkt.mail.JavaMailThread;
 import apkt.model.OpReturn;
-import apkt.service.OpReturnService;
-import apkt.service.ProjService;
-import apkt.service.StringVarsService;
+import apkt.opreturn.OpReturnRunnable;
+import com.google.common.util.concurrent.Service;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.InputStream;
@@ -16,19 +13,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.MediaType;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.params.TestNet3Params;
@@ -36,11 +27,12 @@ import org.bitcoinj.params.TestNet3Params;
 @Path("opReturnRequestWS")
 public class OpReturnRequestWS {
     
-    private static NetworkParameters params = TestNet3Params.get();
-    private static final String TWININGS = "Twinings".replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
+    public static NetworkParameters params = TestNet3Params.get();
+    public static final String APP_NAME = "WalletTemplate";
+    private static final String WALLET_FILE_NAME = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
             + params.getPaymentProtocolId();
-    private WalletAppKit bitcoin;
-    
+    public static WalletAppKit bitcoin;
+
     public OpReturnRequestWS() {
     }
 
@@ -59,19 +51,37 @@ public class OpReturnRequestWS {
             OpReturn opReturn = opReturnJson.getOpReturn();
             opReturn.setDateOpReturn(new Date());
             opReturn.setText("test");
-            OpReturnService opReturnService = OpReturnService.getInstance();
+            
+            setupWalletKit();
+//        Address address = getBitcoin().wallet().currentReceiveAddress();
 
-            String address = opReturnService.getFreshReceiveAddress();
+            bitcoin.addListener(new Service.Listener() {
 
-            opReturn.setAddress(address);
+                @Override
+                public void running() {
+                    super.running();
+                }
+
+            }, Runnable::run);
+            bitcoin.addListener(new Service.Listener() {}, OpReturnRunnable::runLater);
+            bitcoin.startAsync();
             
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
-            EntityManager em = emf.createEntityManager();
+//            OpReturnService opReturnService = OpReturnService.getInstance();
+//
+//            String address = opReturnService.getFreshReceiveAddress();
+
+//            opReturn.setAddress("address");
+//            
+//            EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+//            EntityManager em = emf.createEntityManager();
+//            
+//                GenericDaoJpa.insert(em, opReturn);
+//            
+//            em.close(); emf.close();
             
-                GenericDaoJpa.insert(em, opReturn);
             
-            em.close(); emf.close();
-            
+//            demo.startThread();
+
             opReturn.setDateOpReturn(null);
             opReturn.setText(null);
             opReturnJson.setOpReturn(opReturn);
@@ -90,7 +100,7 @@ public class OpReturnRequestWS {
     public static void main(String[] args) {
         try {
 
-        OpReturn opReturn = new OpReturn("test", "addresssadfsaa");
+        OpReturn opReturn = new OpReturn("test", "addresssadfsaa", OpReturn.OpReturnStatus.OP_RETURN_STATUS_INVALID_DATA, new Date());
         OpReturnJson opReturnJson = new OpReturnJson(opReturn);
         String gson = new Gson().toJson(opReturnJson);
         String url_ = "http://localhost:8080/webresources/".concat("opReturnRequestWS");
@@ -119,7 +129,7 @@ public class OpReturnRequestWS {
     public void setupWalletKit() {
         // If seed is non-null it means we are restoring from backup.
         if (bitcoin == null)
-        bitcoin = new WalletAppKit(params, new File("."), TWININGS) {
+        bitcoin = new WalletAppKit(params, new File("."), WALLET_FILE_NAME) {
             @Override
             protected void onSetupCompleted() {
                 // Don't make the user wait for confirmations for now, as the intention is they're sending it

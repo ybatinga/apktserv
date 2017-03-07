@@ -1,192 +1,215 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package apkt.opreturn;
-    
+
+import apkt.dao.jpa.GenericDaoJpa;
+import apkt.model.OpReturn;
+import static apkt.opreturn.OpReturnMain_.bitcoin;
+import static apkt.opreturn.OpReturnMain_.params;
+import static apkt.opreturn.OpReturnMain_.update;
+import apkt.opreturn.OpReturnRunnable;
 import com.google.common.util.concurrent.Service;
-import org.bitcoinj.core.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.InsufficientMoneyException;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.Transaction;
+import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.ScriptBuilder;
-import org.bitcoinj.utils.BriefLogFormatter;
-import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
-import org.spongycastle.crypto.params.KeyParameter;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+
 
 public class OpReturnMain {
-    //    public static NetworkParameters params = MainNetParams.get();
+
     public static NetworkParameters params = TestNet3Params.get();
-    public static final String APP_NAME = "WalletTemplate";
-    private static final String WALLET_FILE_NAME = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
-            + params.getPaymentProtocolId();
-
+    public static final String APP_NAME = "Twinings";
+    private static final String TWININGS = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
     public static WalletAppKit bitcoin;
-    private static Wallet.SendResult sendResult;
-    private static KeyParameter aesKey;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        System.out.println("hello");
 
-        // Make log output concise.
-        BriefLogFormatter.init();
-        // Create the app kit. It won't do any heavyweight initialization until after we start it.
-        setupWalletKit(null);
+        setupWalletKit();
 
-        if (bitcoin.isChainFileLocked()) {
-            return;
-        }
         bitcoin.addListener(new Service.Listener() {
             @Override
             public void starting() {
                 super.starting();
+                System.out.println("starting");
             }
 
             @Override
             public void running() {
                 super.running();
-                onTimestampClicked();
+                System.out.println("running: " + bitcoin.wallet().currentChangeAddress().toString());
             }
 
-//            @Override
-//            public void stopping(Service.State from) {
-//                super.stopping(from);
-//            }
-//
-//            @Override
-//            public void terminated(Service.State from) {
-//                super.terminated(from);
-//            }
+            @Override
+            public void stopping(Service.State from) {
+                super.stopping(from);
+                System.out.println("stopping");
+            }
+
+            @Override
+            public void terminated(Service.State from) {
+                super.terminated(from);
+                System.out.println("terminated");
+            }
 
             @Override
             public void failed(Service.State from, Throwable failure) {
                 super.failed(from, failure);
+                System.out.println("failed");
             }
+
+        }, Runnable::run);
+        bitcoin.addListener(new Service.Listener() {
         }, OpReturnRunnable::runLater);
-//        bitcoin.addListener(new Service.Listener() {
-//            @Override
-//            public void running() {
-//                super.running();
-//                Listeners listeners = new Listeners(bitcoin.wallet());
-////                BtcjRun.runLater(listeners::setWallet);
-//                ExecutorService threadExecutor = Executors.newCachedThreadPool();
-//                threadExecutor.execute(listeners);
-////                threadExecutor.shutdown();
-//            }
-//        }, PlatformTest::runLater);
         bitcoin.startAsync();
-//        bitcoin.awaitRunning();
-//        bitcoin.setAutoStop(false);
 
     }
 
-    public static void setupWalletKit(DeterministicSeed seed) {
+    public static void setupWalletKit() {
         // If seed is non-null it means we are restoring from backup.
-        bitcoin = new WalletAppKit(params, new File("."), WALLET_FILE_NAME) {
+        bitcoin = new WalletAppKit(params, new File("."), TWININGS) {
             @Override
-            protected void onSetupCompleted() {
+            protected void onSetupCompleted() {                
                 // Don't make the user wait for confirmations for now, as the intention is they're sending it
                 // their own money!
                 bitcoin.wallet().allowSpendingUnconfirmedTransactions();
-
+                System.out.println("WalletAppKit onSetupCompleted: " + bitcoin.wallet().currentChangeAddress().toString());
+                System.out.println("port: " + params.getPort());
+                
+                EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+                EntityManager em = emf.createEntityManager();
+                try {
+                    // register invalid data when wallet is initialized and when wallet is changed
+                    registerInvalidData(em);
+                } catch (Exception ex) {
+                    Logger.getLogger(OpReturnMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                em.close(); emf.close();
+                
+                walletListener();
             }
         };
-        // Now configure and start the appkit. This will take a second or two - we could show a temporary splash screen
-        // or progress widget to keep the user engaged whilst we initialise, but we don't.
-        if (params == RegTestParams.get()) {
-            bitcoin.connectToLocalHost();   // You should run a regtest mode bitcoind locally.
-        }
-//        bitcoin.setDownloadListener(null)
-//               .setBlockingStartup(false)
-//               .setUserAgent(APP_NAME, "1.0");
-        if (seed != null)
-            bitcoin.restoreWalletFromSeed(seed);
-
-
+//        bitcoin.setBlockingStartup(false);
     }
 
-    public static void onTimestampClicked() {
-        // Ask the user for the document to timestamp
-        File doc = new File(new File("."), "boletovoo.pdf");
-        if (doc == null) return; // User cancelled
-        try {
-            timestamp(doc);
-        } catch (IOException e) {
-//            crashAlert(e);
-        } catch (InsufficientMoneyException e) {
-//            informationalAlert("Insufficient funds",
-//                    "You need bitcoins in this wallet in order to pay network fees.");
+    public static void registerInvalidData(EntityManager em) throws Exception{
+        List<OpReturn> opReturnList = GenericDaoJpa.findListByAttribute(
+                em, 
+                OpReturn.class, 
+                "status", 
+                OpReturn.OpReturnStatus.OP_RETURN_STATUS_INVALID_DATA);
+        if (opReturnList.size() < OpReturn.OpReturnInvalidDataList.SIZE) {
+            int newInvalidDataNum = OpReturn.OpReturnInvalidDataList.SIZE - opReturnList.size();
+                if (newInvalidDataNum != 0){
+                    for (int i = 0; i < newInvalidDataNum; i ++){
+                    String freshReceiveAddress = bitcoin.wallet().freshReceiveAddress().toString();
+                    System.out.println("freshReceiveAddress: " + freshReceiveAddress);
+                    OpReturn opReturn = new OpReturn(
+                            "", 
+                            freshReceiveAddress, 
+                            OpReturn.OpReturnStatus.OP_RETURN_STATUS_INVALID_DATA,
+                            new Date());
+                    GenericDaoJpa.insert(em, opReturn);
+                }
+            }
         }
     }
+    
+    public static void registerOpReturnData(EntityManager em) throws Exception{
+        
+        List<OpReturn> opReturnList = GenericDaoJpa.findListByAttribute(
+                em, 
+                OpReturn.class, 
+                "status", 
+                OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);
+        
+        for (OpReturn opReturn : opReturnList){
+            Set<Transaction> transactionSet = bitcoin.wallet().getTransactions(false);
+            Iterator<Transaction> iterator = transactionSet.iterator();
+            while(iterator.hasNext()) {
+                Transaction transaction = iterator.next();
+                List<TransactionOutput> transactionOutputs = transaction.getOutputs();
+                for (TransactionOutput to : transactionOutputs){
+                    Address addressFromP2PKHScript = to.getAddressFromP2PKHScript(params);
+                    if (addressFromP2PKHScript != null){
+                        if (addressFromP2PKHScript.toString().equals(opReturn.getAddress()))
+                        System.out.println("getAddressFromP2PKHScript: " + addressFromP2PKHScript.toString());
+                    }
 
-    private static void timestamp(File doc) throws IOException, InsufficientMoneyException {
-        // Hash it
-        Sha256Hash hash = Sha256Hash.of(doc);
-        Address address = bitcoin.wallet().currentReceiveAddress();
-        byte[] b = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas.".getBytes("UTF-8");
-//        byte[] b = hash.getBytes();
+                    Address addressFromP2SH = to.getAddressFromP2SH(params);
+                    if (addressFromP2SH != null){
+                        if (addressFromP2SH.toString().equals(opReturn.getAddress()))
+                            System.out.println("getAddressFromP2SH: " + addressFromP2SH.toString());
+                            timestampData(opReturn);
+                    }
+                }
+                String text = transaction.getHashAsString();
+                System.out.println("opreturn: " + text);
+            }
+        }
+    }
+    
+    public static void timestampData(OpReturn opReturn) throws IOException, InsufficientMoneyException {
+        String text = opReturn.getText();
+        
         // Create a tx with an OP_RETURN output
         Transaction tx = new Transaction(params);
-        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(b));
-
-        System.out.println("before: " + bitcoin.wallet().getBalance().toString());
-
-        // Send it to the Bitcoin network
-        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
-
-        System.out.println("after: " + bitcoin.wallet().getBalance().toString());
-
+        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(text.getBytes("UTF-8")));
         
-        bitcoin.wallet().addChangeEventListener(OpReturnRunnable::runLater, new WalletChangeEventListener() {
+        System.out.println("wallet before tx: " + bitcoin.wallet().getBalance().toString());
+
+        SendRequest req = SendRequest.forTx(tx);
+        Coin c = req.feePerKb;
+        if (c.value < 15000){
+            long add = 15000 - c.value;
+            req.feePerKb.add(Coin.valueOf(add));
+        }
+        // Send it to the Bitcoin network
+        bitcoin.wallet().sendCoins(req);
+
+        System.out.println("wallet after tx: " + bitcoin.wallet().getBalance().toString());
+    }
+    
+    public static void walletListener() {
+        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
             @Override
             public void onWalletChanged(Wallet wallet) {
-                update(wallet);
+                System.out.println("onWalletChanged");
+                
+                EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+                EntityManager em = emf.createEntityManager();
+
+                try {
+                    // register invalid data when wallet is initialized and when wallet is changed
+                    registerInvalidData(em);
+                } catch (Exception ex) {
+                    Logger.getLogger(OpReturnMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                em.close(); emf.close();
             }
         });
-
-    }
-
-    public static void update(Wallet wallet) {
-        Coin coin = wallet.getBalance();
-        System.out.println("balance: " + wallet.getBalance().toString());
-        Address currentReceiveAddress = wallet.currentReceiveAddress();
-        System.out.println("currentReceiveAddress_1: " + currentReceiveAddress.toString());
-        Address currentReceiveAddress_2 = wallet.currentReceiveAddress();
-        System.out.println("currentReceiveAddress_2: " + currentReceiveAddress_2.toString());
-        Address freshReceiveAddress = wallet.freshReceiveAddress();
-        System.out.println("freshReceiveAddress_1: " + freshReceiveAddress.toString());
-        Address freshReceiveAddress_2 = wallet.freshReceiveAddress();
-        System.out.println("freshReceiveAddress_2: " + freshReceiveAddress.toString());
-        Address currentChangeAddress = wallet.currentChangeAddress();
-        System.out.println("currentChangeAddress_1: " + currentChangeAddress.toString());
-        Address currentChangeAddress_2 = wallet.currentChangeAddress();
-        System.out.println("currentChangeAddress_2: " + currentChangeAddress.toString());
-        Address getChangeAddress = wallet.getChangeAddress();
-        System.out.println("getChangeAddress: " + getChangeAddress.toString());
-        List<Address> addressList = bitcoin.wallet().getIssuedReceiveAddresses();
-        boolean isRunning = bitcoin.isRunning();
-        Set<Transaction> transactionSet = bitcoin.wallet().getTransactions(false);
-        Iterator<Transaction> iterator = transactionSet.iterator();
-        while(iterator.hasNext()) {
-            Transaction transaction = iterator.next();
-            List<TransactionOutput> transactionOutputs = transaction.getOutputs();
-            for (TransactionOutput to : transactionOutputs){
-                Address address = to.getAddressFromP2PKHScript(params);
-                if (address != null){
-                    if (address.toString().equals("msZCnzzqqstKP5JRixNxPxw3oTgVuWxaVm"))
-                    System.out.println("getAddressFromP2PKHScript: " + address.toString());
-                }
-
-                Address address1 = to.getAddressFromP2SH(params);
-                if (address1 != null){
-                    if (address1.toString().equals("msZCnzzqqstKP5JRixNxPxw3oTgVuWxaVm"))
-                        System.out.println("getAddressFromP2SH: " + address1.toString());
-                }
-            }
-            String text = transaction.getHashAsString();
-            System.out.println("opreturn: " + text);
-        }
-
     }
 }
