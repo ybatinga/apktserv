@@ -28,7 +28,7 @@ public class GenericDaoJpa {
                 em.persist(object);
             tx.commit();
         } catch (RollbackException e) {
-             
+             return null;
         }
         return object;
 

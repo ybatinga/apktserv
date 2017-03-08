@@ -213,8 +213,9 @@
                     <archive>
                         <manifest>
                             <mainClass>apkt.opreturn.OpReturnMain</mainClass>
-                            adds maven dependencies as libraries to jar
-                            <addClasspath>true</addClasspath> 
+                            //adds maven dependencies as libraries to jar
+                            <addClasspath>true</addClasspath>
+                            //dependencies/libraries folder inside target folder
                             <classpathPrefix>apktserv-1/WEB-INF/lib</classpathPrefix>
                         </manifest>
                     </archive>

@@ -12,6 +12,7 @@ import static apkt.opreturn.OpReturnMain_.bitcoin;
 import static apkt.opreturn.OpReturnMain_.params;
 import static apkt.opreturn.OpReturnMain_.update;
 import apkt.opreturn.OpReturnRunnable;
+import apkt.service.StringVarsService;
 import com.google.common.util.concurrent.Service;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
@@ -161,49 +163,54 @@ public class OpReturnMain {
                         }
                     }
 
-                    Address addressFromP2SH = to.getAddressFromP2SH(params);
-                    if (addressFromP2SH != null){
-                        if (addressFromP2SH.toString().equals(opReturn.getAddress())){
-                            System.out.println("getAddressFromP2SH: " + addressFromP2SH.toString());
-                            timestampData(em, opReturn);
-                        }
-                    }
+//                    Address addressFromP2SH = to.getAddressFromP2SH(params);
+//                    if (addressFromP2SH != null){
+//                        if (addressFromP2SH.toString().equals(opReturn.getAddress())){
+//                            System.out.println("getAddressFromP2SH: " + addressFromP2SH.toString());
+//                            timestampData(em, opReturn);
+//                        }
+//                    }
                 }
-                String text = transaction.getHashAsString();
-                System.out.println("opreturn: " + text);
             }
         }
     }
     
     public static void timestampData(EntityManager em, OpReturn opReturn) throws IOException, InsufficientMoneyException, Exception {
-        String text = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas."; //opReturn.getText();
+        String text = opReturn.getText();
         
         // Create a tx with an OP_RETURN output
         Transaction tx = new Transaction(params);
         tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(text.getBytes("UTF-8")));
         
         System.out.println("wallet before tx: " + bitcoin.wallet().getBalance().toString());
-        long fee = tx.getFee().longValue();
-        
-//        SendRequest req = SendRequest.forTx(tx);        
+
+        SendRequest req = SendRequest.forTx(tx);
+        req.feePerKb = Coin.parseCoin("0.0002");
 //        Coin c = req.feePerKb;
-//        if (c.value < 15000){
+//        if (c.value < 15000) {
 //            long add = 15000 - c.value;
 //            req.feePerKb.add(Coin.valueOf(add));
-//        }else if (c.value > 15000){
+//        } else if (c.value > 15000) {
 //            long subtract = c.value - 15000;
 //            req.feePerKb.add(Coin.valueOf(subtract));
 //        }
+//        Coin c2 = req.feePerKb;
         // Send it to the Bitcoin network
-        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
-
-        TxOpReturn txOpReturn = new TxOpReturn(
-                "ok", 
-                opReturn.getAddress(), 
-                OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED,
+        Wallet.SendResult sendResult = bitcoin.wallet().sendCoins(req);
+            
+        long fee = sendResult.tx.getFee().longValue();
+        System.out.println("getHashAsString: " + sendResult.tx.getHashAsString());
+        if (sendResult.tx.getHashAsString() != null){
+            opReturn.setStatus(OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED);
+            String ok = GenericDaoJpa.updateWithoutTx(em, OpReturn.class, opReturn);
+            TxOpReturn txOpReturn = new TxOpReturn(
+                opReturn.getText(),
+                opReturn.getAddress(),
+                opReturn.getStatus(),
                 new Date());
-        GenericDaoJpa.insert(em, opReturn);
-        
+            GenericDaoJpa.insert(em, txOpReturn);
+        }
+            
         System.out.println("wallet after tx: " + bitcoin.wallet().getBalance().toString());
         
     }
@@ -229,24 +236,5 @@ public class OpReturnMain {
                 emf.close();
             }
         });
-//        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
-//            @Override
-//            public void onWalletChanged(Wallet wallet) {
-//                System.out.println("onWalletChanged");
-//                
-//                EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
-//                EntityManager em = emf.createEntityManager();
-//
-//                try {                    
-//                    registerOpReturnData(em);
-//                    // register invalid data when wallet is initialized and when wallet is changed
-//                    registerInvalidData(em);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(OpReturnMain.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                
-//                em.close(); emf.close();
-//            }
-//        });
     }
 }
