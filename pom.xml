@@ -209,7 +209,7 @@
                         </goals>
                     </execution>
                 </executions>
-<!--                <configuration>
+                <configuration>
                     <archive>
                         <manifest>
                             <mainClass>apkt.opreturn.OpReturnMain</mainClass>
@@ -218,7 +218,7 @@
                             <classpathPrefix>apktserv-1/WEB-INF/lib</classpathPrefix>
                         </manifest>
                     </archive>
-                </configuration>-->
+                </configuration>
             </plugin>
         </plugins>
     </build>

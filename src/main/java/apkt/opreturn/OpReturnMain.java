@@ -7,6 +7,7 @@ package apkt.opreturn;
 
 import apkt.dao.jpa.GenericDaoJpa;
 import apkt.model.OpReturn;
+import apkt.model.TxOpReturn;
 import static apkt.opreturn.OpReturnMain_.bitcoin;
 import static apkt.opreturn.OpReturnMain_.params;
 import static apkt.opreturn.OpReturnMain_.update;
@@ -154,15 +155,18 @@ public class OpReturnMain {
                 for (TransactionOutput to : transactionOutputs){
                     Address addressFromP2PKHScript = to.getAddressFromP2PKHScript(params);
                     if (addressFromP2PKHScript != null){
-                        if (addressFromP2PKHScript.toString().equals(opReturn.getAddress()))
-                        System.out.println("getAddressFromP2PKHScript: " + addressFromP2PKHScript.toString());
+                        if (addressFromP2PKHScript.toString().equals(opReturn.getAddress())){
+                            System.out.println("getAddressFromP2PKHScript: " + addressFromP2PKHScript.toString());
+                            timestampData(em, opReturn);
+                        }
                     }
 
                     Address addressFromP2SH = to.getAddressFromP2SH(params);
                     if (addressFromP2SH != null){
-                        if (addressFromP2SH.toString().equals(opReturn.getAddress()))
+                        if (addressFromP2SH.toString().equals(opReturn.getAddress())){
                             System.out.println("getAddressFromP2SH: " + addressFromP2SH.toString());
-                            timestampData(opReturn);
+                            timestampData(em, opReturn);
+                        }
                     }
                 }
                 String text = transaction.getHashAsString();
@@ -171,45 +175,78 @@ public class OpReturnMain {
         }
     }
     
-    public static void timestampData(OpReturn opReturn) throws IOException, InsufficientMoneyException {
-        String text = opReturn.getText();
+    public static void timestampData(EntityManager em, OpReturn opReturn) throws IOException, InsufficientMoneyException, Exception {
+        String text = "17-01-2017 Mane, dobrodosao! vole te tata i mama. Gospodi pomiluj nas."; //opReturn.getText();
         
         // Create a tx with an OP_RETURN output
         Transaction tx = new Transaction(params);
         tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(text.getBytes("UTF-8")));
         
         System.out.println("wallet before tx: " + bitcoin.wallet().getBalance().toString());
-
-        SendRequest req = SendRequest.forTx(tx);
-        Coin c = req.feePerKb;
-        if (c.value < 15000){
-            long add = 15000 - c.value;
-            req.feePerKb.add(Coin.valueOf(add));
-        }
+        long fee = tx.getFee().longValue();
+        
+//        SendRequest req = SendRequest.forTx(tx);        
+//        Coin c = req.feePerKb;
+//        if (c.value < 15000){
+//            long add = 15000 - c.value;
+//            req.feePerKb.add(Coin.valueOf(add));
+//        }else if (c.value > 15000){
+//            long subtract = c.value - 15000;
+//            req.feePerKb.add(Coin.valueOf(subtract));
+//        }
         // Send it to the Bitcoin network
-        bitcoin.wallet().sendCoins(req);
+        bitcoin.wallet().sendCoins(SendRequest.forTx(tx));
 
+        TxOpReturn txOpReturn = new TxOpReturn(
+                "ok", 
+                opReturn.getAddress(), 
+                OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED,
+                new Date());
+        GenericDaoJpa.insert(em, opReturn);
+        
         System.out.println("wallet after tx: " + bitcoin.wallet().getBalance().toString());
+        
     }
     
     public static void walletListener() {
-        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
+        bitcoin.wallet().addChangeEventListener(new WalletChangeEventListener() {
             @Override
             public void onWalletChanged(Wallet wallet) {
                 System.out.println("onWalletChanged");
                 
                 EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
                 EntityManager em = emf.createEntityManager();
-
-                try {
+                
+                try {                    
+                    registerOpReturnData(em);
                     // register invalid data when wallet is initialized and when wallet is changed
                     registerInvalidData(em);
                 } catch (Exception ex) {
                     Logger.getLogger(OpReturnMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                em.close(); emf.close();
+                em.close();
+                emf.close();
             }
         });
+//        bitcoin.wallet().addChangeEventListener(Runnable::run, new WalletChangeEventListener() {
+//            @Override
+//            public void onWalletChanged(Wallet wallet) {
+//                System.out.println("onWalletChanged");
+//                
+//                EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+//                EntityManager em = emf.createEntityManager();
+//
+//                try {                    
+//                    registerOpReturnData(em);
+//                    // register invalid data when wallet is initialized and when wallet is changed
+//                    registerInvalidData(em);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(OpReturnMain.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                
+//                em.close(); emf.close();
+//            }
+//        });
     }
 }
