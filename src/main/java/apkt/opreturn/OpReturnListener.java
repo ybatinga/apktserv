@@ -1,15 +1,11 @@
 package apkt.opreturn;
 
-import apkt.opreturn.OpReturnRunnable;
-import apkt.ws.OpReturnRequestWS;
 import com.google.common.util.concurrent.Service;
 import org.bitcoinj.core.*;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.params.TestNet3Params;
-import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.DeterministicSeed;
-import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
 import java.io.File;

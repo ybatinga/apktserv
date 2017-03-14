@@ -85,8 +85,9 @@ public class ServiceDaoJpa {
 //            Join<T, Login> login = tRoot.join(classMetaModel.getSingularAttribute(loginIdColumn, Login.class));
 
 //            cq.select(tRoot).where(login.get("id").in(id));
-
-        cq.select(tRoot).where(cb.equal(tRoot.get(loginIdColumn), id));
+        if (id != null && loginIdColumn != null){
+            cq.select(tRoot).where(cb.equal(tRoot.get(loginIdColumn), id));
+        }
         cq.orderBy(cb.desc(tRoot.get("id")));
         TypedQuery<T> q = em.createQuery(cq);
         tList = q.getResultList();            
@@ -108,10 +109,26 @@ public class ServiceDaoJpa {
         EntityType<T> classMetaModel = m.entity(tClass);         
 
         Root<T> tRoot = cq.from(tClass);
-
-        cq.select(tRoot).where(
+        
+        if (
+                (id != null && loginIdColumn != null)
+                && (stringValue != null && stringColumnName != null)
+        ){
+            cq.select(tRoot).where(
                 cb.equal(tRoot.get(loginIdColumn), id),
                 cb.equal(tRoot.get(stringColumnName), stringValue));
+        } else if (
+                (id != null && loginIdColumn != null)
+                && (stringValue == null && stringColumnName == null)
+        ){
+            cq.select(tRoot).where(
+                cb.equal(tRoot.get(loginIdColumn), id));
+        } else if (
+                (id == null && loginIdColumn == null)
+                && (stringValue != null && stringColumnName != null)
+        ){
+            cq.select(tRoot).where(cb.equal(tRoot.get(stringColumnName), stringValue));
+        } 
         cq.orderBy(cb.desc(tRoot.get("id")));
         TypedQuery<T> q = em.createQuery(cq);
         tList = q.getResultList();            

@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(apkt.ws.GenericResource.class);
         resources.add(apkt.ws.GenericResourceHttpDelete.class);
         resources.add(apkt.ws.LoginWS.class);
+        resources.add(apkt.ws.OpReturnListWS.class);
         resources.add(apkt.ws.OpReturnRequestWS.class);
         resources.add(apkt.ws.OrderListMarketWS.class);
         resources.add(apkt.ws.OrderListWS.class);

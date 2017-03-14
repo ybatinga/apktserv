@@ -1,8 +1,5 @@
 package apkt.dao.jpa;
 
-import apkt.model.Login;
-import apkt.model.Order;
-import apkt.service.ProjService;
 import apkt.service.StringVarsService;
 import java.util.List;
 import javax.persistence.EntityManager;

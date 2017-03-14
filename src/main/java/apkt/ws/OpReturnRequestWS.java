@@ -1,6 +1,11 @@
 package apkt.ws;
 
+import apkt.dao.jpa.GenericDaoJpa;
+import apkt.dao.jpa.ServiceDaoJpa;
+import apkt.json.ListTxOpReturnJson;
+import apkt.json.ObjectJson;
 import apkt.json.OpReturnJson;
+import apkt.json.StringResultJson;
 import apkt.mail.JavaMailThread;
 import apkt.model.OpReturn;
 import apkt.opreturn.OpReturnRunnable;
@@ -14,8 +19,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -24,15 +33,9 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.params.TestNet3Params;
 
-@Path("opReturnRequestWS")
+@Path("opReturnRequest")
 public class OpReturnRequestWS {
     
-    public static NetworkParameters params = TestNet3Params.get();
-    public static final String APP_NAME = "WalletTemplate";
-    private static final String WALLET_FILE_NAME = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
-            + params.getPaymentProtocolId();
-    public static WalletAppKit bitcoin;
-
     public OpReturnRequestWS() {
     }
 
@@ -47,46 +50,32 @@ public class OpReturnRequestWS {
     public String getJson(String jsonclass) {
         try {
             jsonclass = URLDecoder.decode(jsonclass, "UTF-8");
-            OpReturnJson opReturnJson = new Gson().fromJson(jsonclass, OpReturnJson.class);
-            OpReturn opReturn = opReturnJson.getOpReturn();
-            opReturn.setDateOpReturn(new Date());
-            opReturn.setText("test");
             
-            setupWalletKit();
-//        Address address = getBitcoin().wallet().currentReceiveAddress();
-
-            bitcoin.addListener(new Service.Listener() {
-
-                @Override
-                public void running() {
-                    super.running();
-                }
-
-            }, Runnable::run);
-            bitcoin.addListener(new Service.Listener() {}, OpReturnRunnable::runLater);
-            bitcoin.startAsync();
+            OpReturnJson opReturnJson = new Gson().fromJson(jsonclass, OpReturnJson.class);    
+            OpReturn opReturn =  opReturnJson.getOpReturn();
             
-//            OpReturnService opReturnService = OpReturnService.getInstance();
-//
-//            String address = opReturnService.getFreshReceiveAddress();
-
-//            opReturn.setAddress("address");
-//            
-//            EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
-//            EntityManager em = emf.createEntityManager();
-//            
-//                GenericDaoJpa.insert(em, opReturn);
-//            
-//            em.close(); emf.close();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+            EntityManager em = emf.createEntityManager();
             
+            List<OpReturn> opReturnList = ServiceDaoJpa.getObjList(
+                    em, 
+                    OpReturn.class, 
+                    null, 
+                    null, 
+                    OpReturn.OpReturnStatus.OP_RETURN_STATUS_INVALID_DATA, 
+                    "status");
             
-//            demo.startThread();
-
-            opReturn.setDateOpReturn(null);
-            opReturn.setText(null);
-            opReturnJson.setOpReturn(opReturn);
+            OpReturn opReturnUpdate = opReturnList.get(opReturnList.size() - 1);
+            opReturnUpdate.setText(opReturn.getText());
+            opReturnUpdate.setDateOpReturn(new Date());
+            opReturnUpdate.setStatus(OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);
             
-            String gson = new Gson().toJson(opReturnJson);        
+            GenericDaoJpa.update(em, OpReturn.class, opReturnUpdate);
+            
+            em.close(); emf.close();
+            
+            StringResultJson stringResultJson = new StringResultJson(opReturnUpdate.getAddress());
+            String gson = new Gson().toJson(stringResultJson);        
             return gson;
         } catch (Exception ex) {
             JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), ex.toString());
@@ -124,20 +113,5 @@ public class OpReturnRequestWS {
         } catch (Exception ex) {
             System.out.println(ex);
         } 
-    }
-
-    public void setupWalletKit() {
-        // If seed is non-null it means we are restoring from backup.
-        if (bitcoin == null)
-        bitcoin = new WalletAppKit(params, new File("."), WALLET_FILE_NAME) {
-            @Override
-            protected void onSetupCompleted() {
-                // Don't make the user wait for confirmations for now, as the intention is they're sending it
-                // their own money!
-                bitcoin.wallet().allowSpendingUnconfirmedTransactions();
-
-            }
-        };
-    
     }
 }
