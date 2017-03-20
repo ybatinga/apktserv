@@ -1,6 +1,7 @@
 package apkt.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,8 +38,11 @@ public class OpReturn implements Serializable {
     @Basic(optional = false)
     @Column(name = "date_op_return")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateOpReturn;
-
+    private Date dateOpReturn; 
+    
+    @Column(name = "fee")
+    private BigDecimal fee;
+    
     public OpReturn() {
     }
 
@@ -92,7 +96,19 @@ public class OpReturn implements Serializable {
     public void setDateOpReturn(Date dateOpReturn) {
         this.dateOpReturn = dateOpReturn;
     }
-   
+
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
+    }
+    
+    public static class OpReturnFee {
+        public static final BigDecimal FEE = new BigDecimal("0.00015");
+    }
+    
     public static class OpReturnStatus {
         public static final String OP_RETURN_STATUS_INVALID_DATA = "INVALID_DATA";
         public static final String OP_RETURN_STATUS_WAITING_TX = "WAITING_TX";

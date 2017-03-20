@@ -16,6 +16,9 @@ import apkt.service.StringVarsService;
 import com.google.common.util.concurrent.Service;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +36,7 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.SendRequest;
@@ -43,6 +47,7 @@ import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
 public class OpReturnMain {
 
     public static NetworkParameters params = TestNet3Params.get();
+//    public static NetworkParameters params = MainNetParams.get();
     public static final String APP_NAME = "Twinings";
     private static final String TWININGS = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
     public static WalletAppKit bitcoin;
@@ -185,7 +190,8 @@ public class OpReturnMain {
         System.out.println("wallet before tx: " + bitcoin.wallet().getBalance().toString());
 
         SendRequest req = SendRequest.forTx(tx);
-        req.feePerKb = Coin.parseCoin("0.0002");
+        BigDecimal sendfee = opReturn.getFee().setScale(5, RoundingMode.HALF_EVEN);
+        req.feePerKb = Coin.parseCoin(sendfee.toString());
 //        Coin c = req.feePerKb;
 //        if (c.value < 15000) {
 //            long add = 15000 - c.value;
@@ -207,7 +213,9 @@ public class OpReturnMain {
                 opReturn.getText(),
                 opReturn.getAddress(),
                 opReturn.getStatus(),
-                new Date());
+                new Date(),
+                sendResult.tx.getHashAsString(),
+                opReturn.getFee());
             GenericDaoJpa.insert(em, txOpReturn);
         }
             

@@ -9,6 +9,7 @@ import apkt.json.StringResultJson;
 import apkt.mail.JavaMailThread;
 import apkt.model.OpReturn;
 import apkt.opreturn.OpReturnRunnable;
+import apkt.service.CalcVarsService;
 import com.google.common.util.concurrent.Service;
 import com.google.gson.Gson;
 import java.io.File;
@@ -69,13 +70,16 @@ public class OpReturnRequestWS {
             opReturnUpdate.setText(opReturn.getText());
             opReturnUpdate.setDateOpReturn(new Date());
             opReturnUpdate.setStatus(OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);
+            opReturnUpdate.setFee(OpReturn.OpReturnFee.FEE);
             
             GenericDaoJpa.update(em, OpReturn.class, opReturnUpdate);
             
             em.close(); emf.close();
             
-            StringResultJson stringResultJson = new StringResultJson(opReturnUpdate.getAddress());
-            String gson = new Gson().toJson(stringResultJson);        
+            opReturnUpdate.setText(null);
+            opReturnUpdate.setDateOpReturn(null);
+            opReturnUpdate.setStatus(null);
+            String gson = new Gson().toJson(opReturnUpdate);        
             return gson;
         } catch (Exception ex) {
             JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), ex.toString());

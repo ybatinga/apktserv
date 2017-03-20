@@ -1,6 +1,7 @@
 package apkt.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,6 +40,12 @@ public class TxOpReturn implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOpReturn;
 
+    @Column(name = "tx_id")
+    private String txId;
+    
+    @Column(name = "fee")
+    private BigDecimal fee;
+    
     public TxOpReturn() {
     }
 
@@ -46,11 +53,13 @@ public class TxOpReturn implements Serializable {
         this.id = id;
     }
 
-    public TxOpReturn(String text, String address, String status, Date dateOpReturn) {
+    public TxOpReturn(String text, String address, String status, Date dateOpReturn, String txId, BigDecimal fee) {
         this.text = text;
         this.address = address;
         this.status = status;
         this.dateOpReturn = dateOpReturn;
+        this.txId = txId;
+        this.fee = fee;
     }
     
     public Long getId() {
@@ -93,4 +102,19 @@ public class TxOpReturn implements Serializable {
         this.dateOpReturn = dateOpReturn;
     }
 
+    public String getTxId() {
+        return txId;
+    }
+
+    public void setTxId(String txId) {
+        this.txId = txId;
+    }
+
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
+    }
 }
