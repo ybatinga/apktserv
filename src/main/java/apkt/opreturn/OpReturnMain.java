@@ -29,7 +29,7 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.params.TestNet3Params;
+import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
@@ -38,8 +38,8 @@ import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
 
 public class OpReturnMain {
 
-    public static NetworkParameters params = TestNet3Params.get();
-//    public static NetworkParameters params = MainNetParams.get();
+//    public static NetworkParameters params = TestNet3Params.get();
+    public static NetworkParameters params = MainNetParams.get();
     public static final String APP_NAME = "Twinings";
     private static final String TWININGS = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
     public static WalletAppKit bitcoin;

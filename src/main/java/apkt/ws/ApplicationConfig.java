@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(apkt.ws.AppVersionCheckWS.class);
         resources.add(apkt.ws.CurrencyCodeWS.class);
         resources.add(apkt.ws.GenericGet.class);
         resources.add(apkt.ws.GenericPost.class);
