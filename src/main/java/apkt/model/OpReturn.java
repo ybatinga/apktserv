@@ -47,6 +47,9 @@ public class OpReturn implements Serializable {
     @Column(name = "fee")
     private BigDecimal fee;
     
+    @Column(name = "login_id")
+    private Long loginId;
+    
     public OpReturn() {
     }
 
@@ -115,6 +118,14 @@ public class OpReturn implements Serializable {
 
     public void setFee(BigDecimal fee) {
         this.fee = fee;
+    }
+    
+    public Long getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(Long loginId) {
+        this.loginId = loginId;
     }
     
     public static class OpReturnFee {

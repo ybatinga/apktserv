@@ -213,7 +213,8 @@ public class OpReturnMain {
                 opReturn.getStatus(),
                 new Date(),
                 sendResult.tx.getHashAsString(),
-                opReturn.getFee());
+                opReturn.getFee(),
+                opReturn.getLoginId());
             GenericDaoJpa.insert(em, txOpReturn);
         }
             

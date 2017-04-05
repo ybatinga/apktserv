@@ -36,6 +36,10 @@ public class TxOpReturn implements Serializable {
     private String status;
     
     @Basic(optional = false)
+    @Column(name = "type", nullable = false)
+    private String type;
+    
+    @Basic(optional = false)
     @Column(name = "date_op_return")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOpReturn;
@@ -46,6 +50,9 @@ public class TxOpReturn implements Serializable {
     @Column(name = "fee")
     private BigDecimal fee;
     
+    @Column(name = "login_id")
+    private Long loginId;
+    
     public TxOpReturn() {
     }
 
@@ -53,13 +60,14 @@ public class TxOpReturn implements Serializable {
         this.id = id;
     }
 
-    public TxOpReturn(String text, String address, String status, Date dateOpReturn, String txId, BigDecimal fee) {
+    public TxOpReturn(String text, String address, String status, Date dateOpReturn, String txId, BigDecimal fee, Long loginId) {
         this.text = text;
         this.address = address;
         this.status = status;
         this.dateOpReturn = dateOpReturn;
         this.txId = txId;
         this.fee = fee;
+        this.loginId = loginId;
     }
     
     public Long getId() {
@@ -93,6 +101,14 @@ public class TxOpReturn implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+        
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
     
     public Date getDateOpReturn() {
         return dateOpReturn;
@@ -116,5 +132,13 @@ public class TxOpReturn implements Serializable {
 
     public void setFee(BigDecimal fee) {
         this.fee = fee;
+    }
+    
+    public Long getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(Long loginId) {
+        this.loginId = loginId;
     }
 }

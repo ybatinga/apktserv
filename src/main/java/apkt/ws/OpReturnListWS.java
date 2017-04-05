@@ -45,13 +45,27 @@ public class OpReturnListWS {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
             EntityManager em = emf.createEntityManager();
 
-            List<TxOpReturn> txOpReturnList = ServiceDaoJpa.getObjList(
+            List<TxOpReturn> txOpReturnList = null;
+            
+            if (listTxOpReturnJson.getUserId() != null){
+                txOpReturnList = ServiceDaoJpa.getObjList(
+                    em, 
+                    TxOpReturn.class, 
+                    listTxOpReturnJson.getUserId(), 
+                    "loginId", 
+                    OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED, 
+                    "status");
+            } else {
+                txOpReturnList = ServiceDaoJpa.getObjList(
                     em, 
                     TxOpReturn.class, 
                     null, 
                     null, 
                     OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED, 
                     "status");
+            }
+            
+            
             
             em.close(); emf.close();
             
