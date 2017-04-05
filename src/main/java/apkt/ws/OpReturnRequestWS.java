@@ -70,6 +70,7 @@ public class OpReturnRequestWS {
             opReturnUpdate.setText(opReturn.getText());
             opReturnUpdate.setDateOpReturn(new Date());
             opReturnUpdate.setStatus(OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);
+            opReturnUpdate.setType(opReturn.getType());
             opReturnUpdate.setFee(OpReturn.OpReturnFee.FEE);
             
             GenericDaoJpa.update(em, OpReturn.class, opReturnUpdate);

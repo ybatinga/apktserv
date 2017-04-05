@@ -36,6 +36,10 @@ public class OpReturn implements Serializable {
     private String status;
     
     @Basic(optional = false)
+    @Column(name = "type", nullable = false)
+    private String type;
+    
+    @Basic(optional = false)
     @Column(name = "date_op_return")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOpReturn; 
@@ -89,6 +93,14 @@ public class OpReturn implements Serializable {
         this.status = status;
     }
     
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
     public Date getDateOpReturn() {
         return dateOpReturn;
     }
@@ -118,4 +130,10 @@ public class OpReturn implements Serializable {
     public static class OpReturnInvalidDataList {
         public static final int SIZE = 5;
     }
+    
+    public static class OpReturnTytpe {
+        public static final String OP_RETURN_TYPE_TEXT = "TEXT";
+        public static final String OP_RETURN_TYPE_NOTARIZATION = "NOTARIZATION";
+    }
+
 }

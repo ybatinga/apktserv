@@ -29,17 +29,18 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.params.MainNetParams;
+import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
+import org.spongycastle.util.encoders.Hex;
 
 
 public class OpReturnMain {
 
-//    public static NetworkParameters params = TestNet3Params.get();
-    public static NetworkParameters params = MainNetParams.get();
+    public static NetworkParameters params = TestNet3Params.get();
+//    public static NetworkParameters params = MainNetParams.get();
     public static final String APP_NAME = "Twinings";
     private static final String TWININGS = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
     public static WalletAppKit bitcoin;
@@ -173,11 +174,16 @@ public class OpReturnMain {
     }
     
     public static void timestampData(EntityManager em, OpReturn opReturn) throws IOException, InsufficientMoneyException, Exception {
-        String text = opReturn.getText();
+        byte[] opReturnBytes = null;
+        if (opReturn.getType().endsWith(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT)){
+            opReturnBytes = opReturn.getText().getBytes("UTF-8");
+        } else if (opReturn.getType().endsWith(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_NOTARIZATION)){
+            opReturnBytes = Hex.decode(opReturn.getText());
+        }
         
         // Create a tx with an OP_RETURN output
         Transaction tx = new Transaction(params);
-        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(text.getBytes("UTF-8")));
+        tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(opReturnBytes));
         
         System.out.println("wallet before tx: " + bitcoin.wallet().getBalance().toString());
 
