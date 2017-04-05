@@ -47,22 +47,30 @@ public class OpReturnListWS {
 
             List<TxOpReturn> txOpReturnList = null;
             
+            String type = null;
+            
+            if (listTxOpReturnJson.getType().equals(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT)){
+                type = OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT;
+            } else if (listTxOpReturnJson.getType().equals(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_NOTARIZATION)){
+                type = OpReturn.OpReturnTytpe.OP_RETURN_TYPE_NOTARIZATION;
+            }
+            
             if (listTxOpReturnJson.getUserId() != null){
                 txOpReturnList = ServiceDaoJpa.getObjList(
                     em, 
                     TxOpReturn.class, 
                     listTxOpReturnJson.getUserId(), 
                     "loginId", 
-                    OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED, 
-                    "status");
+                    type, 
+                    "type");
             } else {
                 txOpReturnList = ServiceDaoJpa.getObjList(
                     em, 
                     TxOpReturn.class, 
                     null, 
                     null, 
-                    OpReturn.OpReturnStatus.OP_RETURN_STATUS_REGISTERED, 
-                    "status");
+                    type, 
+                    "type");
             }
             
             

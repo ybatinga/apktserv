@@ -39,6 +39,9 @@ public class OpReturn implements Serializable {
     @Column(name = "type", nullable = false)
     private String type;
     
+    @Column(name = "email", length = 30)
+    private String email;
+    
     @Basic(optional = false)
     @Column(name = "date_op_return")
     @Temporal(TemporalType.TIMESTAMP)
@@ -102,6 +105,14 @@ public class OpReturn implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     public Date getDateOpReturn() {

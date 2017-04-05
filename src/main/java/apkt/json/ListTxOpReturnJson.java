@@ -6,6 +6,7 @@ import java.util.List;
 
 public class ListTxOpReturnJson {
     private Long userId;
+    private String type;
     private List<TxOpReturn> txOpReturnList;
     private AuthAux authAux;
 
@@ -17,6 +18,14 @@ public class ListTxOpReturnJson {
         this.userId = userId;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
     public List<TxOpReturn> getTxOpReturnList() {
         return txOpReturnList;
     }
