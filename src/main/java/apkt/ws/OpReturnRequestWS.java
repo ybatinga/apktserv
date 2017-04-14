@@ -71,6 +71,7 @@ public class OpReturnRequestWS {
             opReturnUpdate.setDateOpReturn(new Date());
             opReturnUpdate.setStatus(OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);
             opReturnUpdate.setType(opReturn.getType());
+            opReturnUpdate.setEmail(opReturn.getEmail());
             opReturnUpdate.setFee(OpReturn.OpReturnFee.FEE);
             opReturnUpdate.setLoginId(opReturn.getLoginId());
             

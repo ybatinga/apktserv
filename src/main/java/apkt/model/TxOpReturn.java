@@ -39,6 +39,9 @@ public class TxOpReturn implements Serializable {
     @Column(name = "type", nullable = false)
     private String type;
     
+    @Column(name = "email", length = 30)
+    private String email;
+    
     @Basic(optional = false)
     @Column(name = "date_op_return")
     @Temporal(TemporalType.TIMESTAMP)
@@ -60,15 +63,19 @@ public class TxOpReturn implements Serializable {
         this.id = id;
     }
 
-    public TxOpReturn(String text, String address, String status, Date dateOpReturn, String txId, BigDecimal fee, Long loginId) {
+    public TxOpReturn(String text, String address, String status, String type, String email, Date dateOpReturn, String txId, BigDecimal fee, Long loginId) {
         this.text = text;
         this.address = address;
         this.status = status;
+        this.type = type;
+        this.email = email;
         this.dateOpReturn = dateOpReturn;
         this.txId = txId;
         this.fee = fee;
         this.loginId = loginId;
     }
+    
+    
     
     public Long getId() {
         return id;
@@ -108,6 +115,14 @@ public class TxOpReturn implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     public Date getDateOpReturn() {

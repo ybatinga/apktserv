@@ -6,6 +6,7 @@
 package apkt.opreturn;
 
 import apkt.dao.jpa.GenericDaoJpa;
+import apkt.mail.JavaMailThread;
 import apkt.model.OpReturn;
 import apkt.model.TxOpReturn;
 import com.google.common.util.concurrent.Service;
@@ -17,6 +18,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -34,6 +37,7 @@ import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
+import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.spongycastle.util.encoders.Hex;
 
 
@@ -173,6 +177,28 @@ public class OpReturnMain {
         }
     }
     
+    public static void registerOpReturnData(EntityManager em, Transaction tx) throws Exception{
+        
+        List<OpReturn> opReturnList = GenericDaoJpa.findListByAttribute(
+                em, 
+                OpReturn.class, 
+                "status", 
+                OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);
+        
+        for (OpReturn opReturn : opReturnList){
+            
+            for (TransactionOutput to : tx.getOutputs()){
+                Address addressFromP2PKHScript = to.getAddressFromP2PKHScript(params);
+                if (addressFromP2PKHScript != null){
+                    if (addressFromP2PKHScript.toString().equals(opReturn.getAddress())){
+                        System.out.println("getAddressFromP2PKHScript: " + addressFromP2PKHScript.toString());
+                        timestampData(em, opReturn);
+                    }
+                }
+            }
+        }
+    }
+    
     public static void timestampData(EntityManager em, OpReturn opReturn) throws IOException, InsufficientMoneyException, Exception {
         byte[] opReturnBytes = null;
         if (opReturn.getType().endsWith(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT)){
@@ -211,11 +237,17 @@ public class OpReturnMain {
                 opReturn.getText(),
                 opReturn.getAddress(),
                 opReturn.getStatus(),
+                opReturn.getType(),
+                opReturn.getEmail(),
                 new Date(),
                 sendResult.tx.getHashAsString(),
                 opReturn.getFee(),
                 opReturn.getLoginId());
             GenericDaoJpa.insert(em, txOpReturn);
+            JavaMailThread javaMailThread_1 = new JavaMailThread(opReturn.getEmail(), "opreturn", tx.getHashAsString());
+            ExecutorService threadExecutor = Executors.newCachedThreadPool();
+            threadExecutor.execute(javaMailThread_1);
+            threadExecutor.shutdown();
         }
             
         System.out.println("wallet after tx: " + bitcoin.wallet().getBalance().toString());
@@ -223,16 +255,36 @@ public class OpReturnMain {
     }
     
     public static void walletListener() {
-        bitcoin.wallet().addChangeEventListener(new WalletChangeEventListener() {
+//        bitcoin.wallet().addChangeEventListener(new WalletChangeEventListener() {
+//            @Override
+//            public void onWalletChanged(Wallet wallet) {
+//                System.out.println("onWalletChanged");
+//                
+//                EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
+//                EntityManager em = emf.createEntityManager();
+//                
+//                try {                    
+//                    registerOpReturnData(em);
+//                    // register invalid data when wallet is initialized and when wallet is changed
+//                    registerInvalidData(em);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(OpReturnMain.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                
+//                em.close();
+//                emf.close();
+//            }
+//        });
+        bitcoin.wallet().addCoinsReceivedEventListener(new WalletCoinsReceivedEventListener() {
             @Override
-            public void onWalletChanged(Wallet wallet) {
-                System.out.println("onWalletChanged");
+            public void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
+                System.out.println("onCoinsReceived");
                 
                 EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
                 EntityManager em = emf.createEntityManager();
                 
                 try {                    
-                    registerOpReturnData(em);
+                    registerOpReturnData(em, tx);
                     // register invalid data when wallet is initialized and when wallet is changed
                     registerInvalidData(em);
                 } catch (Exception ex) {
@@ -240,8 +292,7 @@ public class OpReturnMain {
                 }
                 
                 em.close();
-                emf.close();
-            }
+                emf.close();            }
         });
     }
 }
