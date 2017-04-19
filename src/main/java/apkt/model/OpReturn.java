@@ -153,7 +153,7 @@ public class OpReturn implements Serializable {
         public static final int SIZE = 5;
     }
     
-    public static class OpReturnTytpe {
+    public static class OpReturnType {
         public static final String OP_RETURN_TYPE_TEXT = "TEXT";
         public static final String OP_RETURN_TYPE_NOTARIZATION = "NOTARIZATION";
     }

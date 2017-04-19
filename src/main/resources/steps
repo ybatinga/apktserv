@@ -2,8 +2,9 @@
     - db 
         -appversion
     - ProjService: 
-        - AddressType
         - URL
+        - ADDRESS
+        - RBPATH
     - persistence
     - glassfish-web: 
         - context-root

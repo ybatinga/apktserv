@@ -173,9 +173,9 @@ public class GenericDaoJpa {
         return tList;
     }
     
-    public static <T> Object getLastEntry(EntityManager em, Class<T> tClass) throws Exception{
+    public static <T> T getLastEntry(EntityManager em, Class<T> tClass) throws Exception{
         List<T> tList = null;
-        Object object = null;
+        T tRes = null;
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(tClass);
 
@@ -185,8 +185,8 @@ public class GenericDaoJpa {
         TypedQuery<T> q = em.createQuery(cq);
         tList = q.setMaxResults(1).getResultList();
         if (tList.size() > 0){
-            object = tList.get(0);
+            tRes = tList.get(0);
         }
-        return object;
+        return tRes;
     }
 }

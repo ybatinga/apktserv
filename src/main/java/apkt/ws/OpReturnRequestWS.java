@@ -66,7 +66,7 @@ public class OpReturnRequestWS {
                     OpReturn.OpReturnStatus.OP_RETURN_STATUS_INVALID_DATA, 
                     "status");
             
-            OpReturn opReturnUpdate = opReturnList.get(opReturnList.size() - 1);
+            OpReturn opReturnUpdate = (OpReturn) opReturnList.get(opReturnList.size() - 1);
             opReturnUpdate.setText(opReturn.getText());
             opReturnUpdate.setDateOpReturn(new Date());
             opReturnUpdate.setStatus(OpReturn.OpReturnStatus.OP_RETURN_STATUS_WAITING_TX);

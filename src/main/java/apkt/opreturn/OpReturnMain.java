@@ -8,15 +8,21 @@ package apkt.opreturn;
 import apkt.dao.jpa.GenericDaoJpa;
 import apkt.mail.JavaMailThread;
 import apkt.model.OpReturn;
+import apkt.model.OpReturn.OpReturnType;
 import apkt.model.TxOpReturn;
+import apkt.service.ProjService;
 import com.google.common.util.concurrent.Service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,19 +38,19 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
-import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.spongycastle.util.encoders.Hex;
 
 
 public class OpReturnMain {
 
-    public static NetworkParameters params = TestNet3Params.get();
-//    public static NetworkParameters params = MainNetParams.get();
+//    public static NetworkParameters params = TestNet3Params.get();
+    public static NetworkParameters params = MainNetParams.get();
     public static final String APP_NAME = "Twinings";
     private static final String TWININGS = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
     public static WalletAppKit bitcoin;
@@ -201,9 +207,9 @@ public class OpReturnMain {
     
     public static void timestampData(EntityManager em, OpReturn opReturn) throws IOException, InsufficientMoneyException, Exception {
         byte[] opReturnBytes = null;
-        if (opReturn.getType().endsWith(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT)){
+        if (opReturn.getType().endsWith(OpReturn.OpReturnType.OP_RETURN_TYPE_TEXT)){
             opReturnBytes = opReturn.getText().getBytes("UTF-8");
-        } else if (opReturn.getType().endsWith(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_NOTARIZATION)){
+        } else if (opReturn.getType().endsWith(OpReturn.OpReturnType.OP_RETURN_TYPE_NOTARIZATION)){
             opReturnBytes = Hex.decode(opReturn.getText());
         }
         
@@ -244,10 +250,40 @@ public class OpReturnMain {
                 opReturn.getFee(),
                 opReturn.getLoginId());
             GenericDaoJpa.insert(em, txOpReturn);
-            JavaMailThread javaMailThread_1 = new JavaMailThread(opReturn.getEmail(), "opreturn", tx.getHashAsString());
-            ExecutorService threadExecutor = Executors.newCachedThreadPool();
-            threadExecutor.execute(javaMailThread_1);
-            threadExecutor.shutdown();
+            
+            if (txOpReturn.getType().equals(OpReturnType.OP_RETURN_TYPE_NOTARIZATION)){
+                File file = new File(ProjService.RBPATH);
+                URL[] urls = {file.toURI().toURL()};
+                ClassLoader loader = new URLClassLoader(urls);
+                ResourceBundle rb;
+                String language = "en";
+                if (language.equals("pt")){
+                    rb = ResourceBundle.getBundle("SystemMessages", Locale.forLanguageTag("pt"), loader);
+                } else {
+                    rb = ResourceBundle.getBundle("SystemMessages", Locale.getDefault(), loader);
+                }
+                String emailSubject = rb.getString("email_body_op_return_subject_notarize");
+                StringBuilder emailBodyOpReturn = new StringBuilder();
+                emailBodyOpReturn.append(rb.getString("email_body_hi"));
+                emailBodyOpReturn.append(",");
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_op_return_subject_notarize"));
+                emailBodyOpReturn.append(": ");
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_op_return_transaction_id"));
+                emailBodyOpReturn.append(" ");
+                emailBodyOpReturn.append(txOpReturn.getTxId());
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_op_return_search"));
+                emailBodyOpReturn.append(" ");
+                emailBodyOpReturn.append("https://www.blocktrail.com/BTC/tx/");
+                emailBodyOpReturn.append(txOpReturn.getTxId());
+                JavaMailThread javaMailThread_1 = new JavaMailThread(opReturn.getEmail(), emailSubject, emailBodyOpReturn.toString());
+                ExecutorService threadExecutor = Executors.newCachedThreadPool();
+                threadExecutor.execute(javaMailThread_1);
+                threadExecutor.shutdown();
+            }
+            
         }
             
         System.out.println("wallet after tx: " + bitcoin.wallet().getBalance().toString());

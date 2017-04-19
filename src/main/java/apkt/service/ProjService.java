@@ -8,7 +8,8 @@ public class ProjService {
     public static final String URL = UrlType.HTTP_PROD;
     public static final String BLOCKCYPHERTOKEN = "15cec3f0a8754248af469151f249b5d3";
     public static final String ADDRESS = AddressType.MAIN;
-    public static String LANGUAGE;
+    public static final String RBPATH = ResourceBundlePath.AWS;
+    public static ResourceBundle RB;
 
     private class AddressType{
         public static final String BLOCKCYPHERTEST = "C9uvjNrozYgX41C7yKdczFVz5qepHW1Yes";
@@ -21,14 +22,16 @@ public class ProjService {
         public static final String HTTP_HOMOLOG = "https://apekato.com/homolog/webresources/";        
     }  
     
-    public static ResourceBundle RB;    
+    public static class ResourceBundlePath{
+        public static final String LOCAL = "src/main/webapp/WEB-INF/classes";
+        public static final String AWS = "apktserv-1/WEB-INF/classes";        
+    }    
     public static class LanguegeType{
     	public static final ResourceBundle resourceBundle_default = ResourceBundle.getBundle(
                 "SystemMessages", Locale.getDefault());
 
     	public static final ResourceBundle resourceBundle_pt = ResourceBundle.getBundle(
                 "SystemMessages", Locale.forLanguageTag("pt"));
-
     }   
 }
 

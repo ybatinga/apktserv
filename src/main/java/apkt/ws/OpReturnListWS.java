@@ -49,10 +49,10 @@ public class OpReturnListWS {
             
             String type = null;
             
-            if (listTxOpReturnJson.getType().equals(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT)){
-                type = OpReturn.OpReturnTytpe.OP_RETURN_TYPE_TEXT;
-            } else if (listTxOpReturnJson.getType().equals(OpReturn.OpReturnTytpe.OP_RETURN_TYPE_NOTARIZATION)){
-                type = OpReturn.OpReturnTytpe.OP_RETURN_TYPE_NOTARIZATION;
+            if (listTxOpReturnJson.getType().equals(OpReturn.OpReturnType.OP_RETURN_TYPE_TEXT)){
+                type = OpReturn.OpReturnType.OP_RETURN_TYPE_TEXT;
+            } else if (listTxOpReturnJson.getType().equals(OpReturn.OpReturnType.OP_RETURN_TYPE_NOTARIZATION)){
+                type = OpReturn.OpReturnType.OP_RETURN_TYPE_NOTARIZATION;
             }
             
             if (listTxOpReturnJson.getUserId() != null){
