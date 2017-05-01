@@ -10,7 +10,6 @@
         - context-root
     - BlockCypherConstants
         - netbeans
-        - android studio
     - OpReturnMain
         - change NetworkParameters
     - change file name in homolog

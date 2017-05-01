@@ -95,73 +95,44 @@ public class TxOutput implements Serializable {
     public boolean addAddress(String address) {
         return addresses.add(address);
     }
-    
-    /**
-     * @return the id
-     */
+
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
+  
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * @return the value
-     */
     public BigDecimal getValue() {
         return value;
     }
 
-    /**
-     * @param value the value to set
-     */
     public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    /**
-     * @return the script
-     */
     public String getScript() {
         return script;
     }
 
-    /**
-     * @param script the script to set
-     */
     public void setScript(String script) {
         this.script = script;
     }
 
-    /**
-     * @return the scriptType
-     */
     public String getScriptType() {
         return scriptType;
     }
 
-    /**
-     * @param scriptType the scriptType to set
-     */
     public void setScriptType(String scriptType) {
         this.scriptType = scriptType;
     }
 
-    /**
-     * @return the spentBy
-     */
     public String getSpentBy() {
         return spentBy;
     }
 
-    /**
-     * @param spentBy the spentBy to set
-     */
     public void setSpentBy(String spentBy) {
         this.spentBy = spentBy;
     }

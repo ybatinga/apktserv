@@ -121,86 +121,51 @@ public class TxInput implements Serializable {
     public boolean addAddress(String address) {
         return addresses.add(address);
     }
-    /**
-     * @return the id
-     */
+
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * @return the prevHash
-     */
     public String getPrevHash() {
         return prevHash;
     }
 
-    /**
-     * @param prevHash the prevHash to set
-     */
     public void setPrevHash(String prevHash) {
         this.prevHash = prevHash;
     }
 
-    /**
-     * @return the outputIndex
-     */
     public BigDecimal getOutputIndex() {
         return outputIndex;
     }
 
-    /**
-     * @param outputIndex the outputIndex to set
-     */
     public void setOutputIndex(BigDecimal outputIndex) {
         this.outputIndex = outputIndex;
     }
 
-    /**
-     * @return the outputValue
-     */
     public BigDecimal getOutputValue() {
         return outputValue;
     }
 
-    /**
-     * @param outputValue the outputValue to set
-     */
     public void setOutputValue(BigDecimal outputValue) {
         this.outputValue = outputValue;
     }
 
-    /**
-     * @return the scriptType
-     */
     public String getScriptType() {
         return scriptType;
     }
 
-    /**
-     * @param scriptType the scriptType to set
-     */
     public void setScriptType(String scriptType) {
         this.scriptType = scriptType;
     }
 
-    /**
-     * @return the script
-     */
     public String getScript() {
         return script;
     }
 
-    /**
-     * @param script the script to set
-     */
     public void setScript(String script) {
         this.script = script;
     }
@@ -221,58 +186,34 @@ public class TxInput implements Serializable {
         this.addresses = addresses;
     }
 
-    /**
-     * @return the sequence
-     */
     public Long getSequence() {
         return sequence;
     }
 
-    /**
-     * @param sequence the sequence to set
-     */
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
 
-    /**
-     * @return the age
-     */
     public Long getAge() {
         return age;
     }
 
-    /**
-     * @param age the age to set
-     */
     public void setAge(Long age) {
         this.age = age;
     }
 
-    /**
-     * @return the walletName
-     */
     public String getWalletName() {
         return walletName;
     }
 
-    /**
-     * @param walletName the walletName to set
-     */
     public void setWalletName(String walletName) {
         this.walletName = walletName;
     }
 
-    /**
-     * @return the walletToken
-     */
     public String getWalletToken() {
         return walletToken;
     }
 
-    /**
-     * @param walletToken the walletToken to set
-     */
     public void setWalletToken(String walletToken) {
         this.walletToken = walletToken;
     }
