@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
@@ -33,6 +37,21 @@ public class ProofOfNotarization {
                 if (hash.equals(to.getDataHex())){
                     boolean t = true;
                 }
+            }
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            String dateInString = resultObject.getConfirmed();
+
+            try {
+
+                Date date = formatter.parse(dateInString.replaceAll("Z$", "+0000"));
+                System.out.println(date);
+
+                System.out.println("time zone : " + TimeZone.getDefault().getID());
+                System.out.println(formatter.format(date));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
             
         } catch (MalformedURLException ex) {

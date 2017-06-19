@@ -123,7 +123,11 @@ public class LoginWS {
             if (login != null 
                     //&& mobileInfo != null
                     ) {
-                AppVersion appVersion = (AppVersion) GenericDaoJpa.getLastEntry(em, AppVersion.class);
+                AppVersion appVersion = (AppVersion) GenericDaoJpa.findByAttribute(
+                        em, 
+                        AppVersion.class,
+                        "appName",
+                        authAux.getAppName());
                 if (appVersion != null){
                     appVer = appVersion.getAppVersion();
                     isVerifyVersion = appVersion.isVerifyVersion();

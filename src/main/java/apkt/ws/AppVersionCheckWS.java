@@ -33,18 +33,22 @@ public class AppVersionCheckWS {
     @Consumes("application/json")
     @Produces("application/json")
     public String getJson(String jsonclass) {
-        AppVersion appVersion = null;
+        AppVersion appVersionRes = null;
         try{
             jsonclass = URLDecoder.decode(jsonclass, "UTF-8");    
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
             EntityManager em = emf.createEntityManager();
-            
-            appVersion = (AppVersion) GenericDaoJpa.getLastEntry(em, AppVersion.class);
+            AppVersion appVersion = new Gson().fromJson(jsonclass, AppVersion.class);
+            appVersionRes = (AppVersion) GenericDaoJpa.findByAttribute(
+                        em, 
+                        AppVersion.class,
+                        "appName",
+                        appVersion.getAppName());
 
         } catch (Exception e){
             
         }
-        return new Gson().toJson(appVersion);
+        return new Gson().toJson(appVersionRes);
     }
     
     public static void main(String[] args) {

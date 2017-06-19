@@ -29,6 +29,8 @@ public class AppVersion implements Serializable {
     private Date dateVersion;
     @Column(name = "verify_version")
     private boolean verifyVersion;
+    @Column(name = "app_name", nullable = false)
+    private String appName;
 
     public AppVersion() {
     }
@@ -68,5 +70,13 @@ public class AppVersion implements Serializable {
 
     public void setVerifyVersion(boolean verifyVersion) {
         this.verifyVersion = verifyVersion;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }

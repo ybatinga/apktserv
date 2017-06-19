@@ -14,6 +14,7 @@ private String email;
     private byte[] passwordB;
     private byte[] passwordResetCodeB;
     private String language;
+    private String appName;
 
     public String getEmail() {
         return email;
@@ -111,4 +112,11 @@ private String email;
         this.language = language;
     }
     
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 }
