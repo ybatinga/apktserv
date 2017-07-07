@@ -9,7 +9,7 @@ private String email;
     private String networkCountryIso;
     private String subscriberId;
     private String gcmClientRegId;
-    private Object object;
+//    private Object object;
     private byte[] emailB;
     private byte[] passwordB;
     private byte[] passwordResetCodeB;
@@ -72,13 +72,13 @@ private String email;
         this.gcmClientRegId = gcmClientRegId;
     }
 
-    public Object getObject() {
-        return object;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
+//    public Object getObject() {
+//        return object;
+//    }
+//
+//    public void setObject(Object object) {
+//        this.object = object;
+//    }
 
     public byte[] getEmailB() {
         return emailB;

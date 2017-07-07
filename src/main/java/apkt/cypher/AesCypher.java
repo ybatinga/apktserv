@@ -43,16 +43,16 @@ public class AesCypher {
         return k.getEncoded();
     }
   
-    public static byte[] packData(
-            byte[] keyValue,
-            AuthAux authAux, 
-            Object object
-            ) throws Exception {  
-        authAux.setObject(object);
-        byte[] encdata = encrypt(keyValue, new Gson().toJson(authAux));  
-        return encdata;
-        
-    }  
+//    public static byte[] packData(
+//            byte[] keyValue,
+//            AuthAux authAux, 
+//            Object object
+//            ) throws Exception {  
+//        authAux.setObject(object);
+//        byte[] encdata = encrypt(keyValue, new Gson().toJson(authAux));  
+//        return encdata;
+//        
+//    }  
     
 //    public static String unpackData(String key, String data) {  
 //        try {  

@@ -54,20 +54,20 @@ public class AESExample {
         return k.getEncoded();
     }
   
-    public static String pack(
-            AuthAux authAux, 
-            Object object
-            ) {  
-        try {  
-            authAux.setObject(object);
-            keyValue = setKeyValue(); 
-            String encdata = encrypt(new Gson().toJson(authAux));  
-            return encdata;
-        } catch (Exception ex) {  
-            Logger.getLogger(AESExample.class.getName()).log(Level.SEVERE, null, ex);  
-        } 
-        return null;
-    }  
+//    public static String pack(
+//            AuthAux authAux, 
+//            Object object
+//            ) {  
+//        try {  
+//            authAux.setObject(object);
+//            keyValue = setKeyValue(); 
+//            String encdata = encrypt(new Gson().toJson(authAux));  
+//            return encdata;
+//        } catch (Exception ex) {  
+//            Logger.getLogger(AESExample.class.getName()).log(Level.SEVERE, null, ex);  
+//        } 
+//        return null;
+//    }  
     
     public static String unpack(String key, String data) {  
         try {  

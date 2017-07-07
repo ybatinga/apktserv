@@ -6,6 +6,7 @@ import apkt.model.Login;
 import apkt.model.Order;
 import apkt.model.OrderStatus;
 import apkt.dao.jpa.ServiceDaoJpa;
+import apkt.json.StringResultJson;
 import com.google.gson.Gson;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -61,7 +62,10 @@ public class TxCancelWS {
                 GenericDaoJpa.insertWithoutTx(em, orderStatus);
             tx.commit();
             
-            return result;
+            StringResultJson stringResultJson = new StringResultJson();
+            stringResultJson.setResult("txCancel");
+            String res = new Gson().toJson(stringResultJson);        
+            return res;        
         } catch (Exception ex){
             return null;
         }

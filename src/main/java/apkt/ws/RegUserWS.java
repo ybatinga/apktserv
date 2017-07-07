@@ -106,7 +106,9 @@ public class RegUserWS {
             // checks if verification returned a list with an already registered login.
             // If so, it gets the variables (SimSerialNumber or Email or Username)
             // already registered.
-            if (loginAlreadyRegList.size() > 0 || mobileInfoAlreadyRegList.size() > 0){
+            if (loginAlreadyRegList.size() > 0 
+//                    || mobileInfoAlreadyRegList.size() > 0 // uncomment this line of code when simserialnumber verification is needed
+                    ){
 
                 // assigns to *Exists variables values that have already been registered.
                 for (Login loginAlredyRegistered : loginAlreadyRegList){
@@ -125,16 +127,16 @@ public class RegUserWS {
                 }
 
                 // assigns to *Exists variables values that have already been registered.
-                for (MobileInfo mobileInfoAlredyRegistered : mobileInfoAlreadyRegList){
-                    
-                    // Code is used to verify SimSerialNumber or Email or Username is alredy registered
-                    // Affected classes:
-                    // AutentUserNameActivity (ANDROID), CadastrarMobileInfoWs (SERVER), AuthentUniqueVarsWS (SERVER), AuthentUniqueVarsDaoJpa (SERVER), LoginBB (SERVER), AuthentUniqueVarsDaoJpaTest (SERVER).
-                    if (mobileInfoAlredyRegistered.getSimSerialNumber()
-                            .equals(regUserPostJson.getSimSerialNumber())){
-                        simSerialNumExists = mobileInfoAlredyRegistered.getSimSerialNumber();
-                    }
-                }
+//                for (MobileInfo mobileInfoAlredyRegistered : mobileInfoAlreadyRegList){
+//                    
+//                    // Code is used to verify SimSerialNumber or Email or Username is alredy registered
+//                    // Affected classes:
+//                    // AutentUserNameActivity (ANDROID), CadastrarMobileInfoWs (SERVER), AuthentUniqueVarsWS (SERVER), AuthentUniqueVarsDaoJpa (SERVER), LoginBB (SERVER), AuthentUniqueVarsDaoJpaTest (SERVER).
+//                    if (mobileInfoAlredyRegistered.getSimSerialNumber()
+//                            .equals(regUserPostJson.getSimSerialNumber())){
+//                        simSerialNumExists = mobileInfoAlredyRegistered.getSimSerialNumber();
+//                    }
+//                }
             }else{
                 try {
                     // persists Login 
