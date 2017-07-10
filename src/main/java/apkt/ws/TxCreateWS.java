@@ -188,6 +188,12 @@ public class TxCreateWS {
                 StringBuilder emailBodyMaker = new StringBuilder();
                 emailBodyMaker.append(ProjService.RB.getString("email_body_hi") + " ");
                 emailBodyMaker.append(makerLogin.getUsername() + ",");
+                
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyMaker.append("<br></br><br></br>");       
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyMaker.append(ProjService.RB.getString("email_boby_testnet_bitcoin_msg"));
+                
                 emailBodyMaker.append("<br></br><br></br>");
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_pymnt_volume") + " ");
                 emailBodyMaker.append(order.getAmountNetBuy() + " ");
@@ -219,6 +225,12 @@ public class TxCreateWS {
                 StringBuilder emailBodyTaker = new StringBuilder();
                 emailBodyTaker.append(ProjService.RB.getString("email_body_hi") + " ");
                 emailBodyTaker.append(takerLogin.getUsername() + ",");
+                
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyTaker.append("<br></br><br></br>");       
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyTaker.append(ProjService.RB.getString("email_boby_testnet_bitcoin_msg"));
+                
                 emailBodyTaker.append("<br></br><br></br>");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_send_exactly") + " ");
                 emailBodyTaker.append(order.getAmountNetSell() + " ");
@@ -267,6 +279,12 @@ public class TxCreateWS {
                 StringBuilder emailBodyMaker = new StringBuilder();
                 emailBodyMaker.append(ProjService.RB.getString("email_body_hi") + " ");
                 emailBodyMaker.append(makerLogin.getUsername() + ",");
+                
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyMaker.append("<br></br><br></br>");       
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyMaker.append(ProjService.RB.getString("email_boby_testnet_bitcoin_msg"));
+                
                 emailBodyMaker.append("<br></br><br></br>");
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_send_exactly") + " ");
                 emailBodyMaker.append(order.getAmountNetSell() + " ");
@@ -300,6 +318,12 @@ public class TxCreateWS {
                 StringBuilder emailBodyTaker = new StringBuilder();
                 emailBodyTaker.append(ProjService.RB.getString("email_body_hi") + " ");
                 emailBodyTaker.append(takerLogin.getUsername() + ",");
+                
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyTaker.append("<br></br><br></br>");       
+                // keyword to search for bitcoin testnet: BITCOINTESTNET
+                emailBodyTaker.append(ProjService.RB.getString("email_boby_testnet_bitcoin_msg"));
+                
                 emailBodyTaker.append("<br></br><br></br>");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_notify_seller") + " ");
                 emailBodyTaker.append(order.getAmountNetBuy() + " ");
