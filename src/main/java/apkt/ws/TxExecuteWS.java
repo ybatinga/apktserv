@@ -364,7 +364,7 @@ public class TxExecuteWS {
             
         } catch (Exception exception) {
             String e = exception.toString();
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName() + Order.OrderStatuses.ORDER_STATUS_TX_DEPOSITED, exception.toString());
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName() + Order.OrderStatuses.ORDER_STATUS_TX_DEPOSITED, new Date().toString() + " " + exception.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown();

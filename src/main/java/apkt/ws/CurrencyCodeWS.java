@@ -10,6 +10,7 @@ import apkt.json.ListPymntMthdJson;
 import apkt.model.PymntMthd;
 import com.google.gson.Gson;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -60,7 +61,7 @@ public class CurrencyCodeWS {
             return new Gson().toJson(listPymntMthdJson);
             
         } catch (Exception ex) {
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), ex.toString());
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), new Date().toString() + " " + ex.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown();

@@ -10,6 +10,7 @@ import apkt.service.StringVarsService;
 import apkt.utils.StringUtil;
 import com.google.gson.Gson;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.persistence.EntityManager;
@@ -52,7 +53,7 @@ public class PasswordResetWS {
             
             em.close(); emf.close();
         }catch(Exception ex){
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), ex.toString());
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), new Date().toString() + " " + ex.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown();

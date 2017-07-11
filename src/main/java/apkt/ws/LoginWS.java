@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.lang.reflect.Modifier;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -192,7 +193,7 @@ public class LoginWS {
             
         }catch(Exception e){
             e.printStackTrace();
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", "Login", e.toString());
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", "Login", new Date().toString() + " " + e.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown();

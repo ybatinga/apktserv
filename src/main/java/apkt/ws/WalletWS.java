@@ -16,6 +16,7 @@ import apkt.utils.BlockCypherConstants;
 import apkt.utils.StringUtil;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -114,7 +115,7 @@ public class WalletWS {
                 listGson = new Gson().toJson(listWalletJson_2);
                 return listGson;
             }else{
-                JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), ex.toString());
+                JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), new Date().toString() + " " + ex.toString());
                 ExecutorService threadExecutor = Executors.newCachedThreadPool();
                 threadExecutor.execute(javaMailThread_1);
                 threadExecutor.shutdown();
