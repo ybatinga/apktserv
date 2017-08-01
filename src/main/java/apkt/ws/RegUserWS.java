@@ -166,7 +166,7 @@ public class RegUserWS {
                     mobileInfoRes = regUserDaoJpa.insert(em, mobileInfo.getMobileInfoAux());
                     
                 } catch (Exception e) {
-                    JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), e.toString());
+                    JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), new Date().toString() + " " + e.toString());
                     ExecutorService threadExecutor = Executors.newCachedThreadPool();
                     threadExecutor.execute(javaMailThread_1);
                     threadExecutor.shutdown();                         
@@ -206,7 +206,7 @@ public class RegUserWS {
             em.close(); emf.close();
             return new Gson().toJson(loginJson);
         } catch (Exception ex) {
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), ex.toString());
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName(), new Date().toString() + " " + ex.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown();

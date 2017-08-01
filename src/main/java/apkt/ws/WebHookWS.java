@@ -431,7 +431,7 @@ public class WebHookWS {
             int lineNumber = new Throwable().getStackTrace()[0].getLineNumber();
             String concat = "xception: ".concat(exception.toString()).concat(" --- Json: ").concat(toJson);
         
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName() + xEventType, concat.concat("debug: " + debug));
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", this.getClass().getName() + xEventType, new Date().toString() + " " + concat.concat("debug: " + debug));
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown(); 
@@ -472,7 +472,7 @@ public class WebHookWS {
         
         String concat = stage + " --- X-EventType: ".concat(xEvent).concat(" --- Tx Json: ").concat(toJson);
         
-        JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", xEvent, concat);
+        JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", xEvent, new Date().toString() + " " + concat);
         ExecutorService threadExecutor = Executors.newCachedThreadPool();
         threadExecutor.execute(javaMailThread_1);
         threadExecutor.shutdown();

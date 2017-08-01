@@ -101,7 +101,7 @@ public class OrderWS {
             
             return StringVarsService.OK;
         } catch (Exception ex) {
-            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", Order.OrderStatuses.ORDER_STATUS_OPEN, ex.toString());
+            JavaMailThread javaMailThread_1 = new JavaMailThread("desenv.notes@gmail.com", Order.OrderStatuses.ORDER_STATUS_OPEN, new Date().toString() + " " + ex.toString());
             ExecutorService threadExecutor = Executors.newCachedThreadPool();
             threadExecutor.execute(javaMailThread_1);
             threadExecutor.shutdown();
