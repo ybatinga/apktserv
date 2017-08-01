@@ -15,7 +15,11 @@ public class SendEmailTest {
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_send_exactly") + " ");
                 emailBodyMaker.append("0.1232" + " ");
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_send_quantity_to_wallet")  + " ");
-                emailBodyMaker.append("<a href=https://blockchain.info/address/");
+                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                    emailBodyMaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                    emailBodyMaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                }
                 emailBodyMaker.append("paymentForward.getInputAddress()");
                 emailBodyMaker.append(">");
                 emailBodyMaker.append("paymentForward.getInputAddress()");
@@ -37,7 +41,11 @@ public class SendEmailTest {
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_notify_seller") + " ");
                 emailBodyTaker.append("order.getAmountNetBuy()" + " ");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_pymnt_wallet") + " ");
-                emailBodyTaker.append("<a href=https://blockchain.info/address/");
+                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                    emailBodyTaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                    emailBodyTaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                }
                 emailBodyTaker.append("multisigAddress.getAddress()");
                 emailBodyTaker.append(">");
                 emailBodyTaker.append("multisigAddress.getAddress()");
@@ -72,7 +80,11 @@ public class SendEmailTest {
 //                emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_pymnt_volume") + " ");
 //                emailBodyMaker.append("0.00123" + " ");
 //                emailBodyMaker.append(" " + ProjService.RB.getString("email_body_order_created_buy_maker_pymnt_wallet") + " ");
-//                emailBodyMaker.append("<a href=https://blockchain.info/address/");
+//                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+//                    emailBodyMaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+//                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+//                    emailBodyMaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+//                }
 //                emailBodyMaker.append("1241234");
 //                emailBodyMaker.append(">");
 //                emailBodyMaker.append("address");
@@ -93,7 +105,11 @@ public class SendEmailTest {
 //                emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_send_exactly") + " ");
 //                emailBodyTaker.append("0.123423" + " ");
 //                emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_send_quantity_to_wallet") + " ");              
-//                emailBodyTaker.append("<a href=https://blockchain.info/address/");
+//                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+//                    emailBodyTaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+//                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+//                    emailBodyTaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+//                }
 //                emailBodyTaker.append("assasdfds");
 //                emailBodyTaker.append(">");
 //                emailBodyTaker.append("address");

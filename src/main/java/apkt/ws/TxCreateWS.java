@@ -184,7 +184,7 @@ public class TxCreateWS {
             
             if (order.getType().equals(Order.OrderType.ORDER_TYPE_BUY)){
                 StringUtil.setLanguageResource(makerLogin.getLang());
-                String emailSubjectMaker = ProjService.RB.getString("email_subject_order_created_sell_maker");
+                String emailSubjectMaker = ProjService.RB.getString("email_subject_order_created_buy_maker");
                 StringBuilder emailBodyMaker = new StringBuilder();
                 emailBodyMaker.append(ProjService.RB.getString("email_body_hi") + " ");
                 emailBodyMaker.append(makerLogin.getUsername() + ",");
@@ -198,7 +198,11 @@ public class TxCreateWS {
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_buy_maker_pymnt_volume") + " ");
                 emailBodyMaker.append(order.getAmountNetBuy() + " ");
                 emailBodyMaker.append(" " + ProjService.RB.getString("email_body_order_created_buy_maker_pymnt_wallet") + " ");
-                emailBodyMaker.append("<a href=https://blockchain.info/address/");
+                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                    emailBodyMaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                    emailBodyMaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                }
                 emailBodyMaker.append(addressMultisig.getAddress());
                 emailBodyMaker.append(">");
                 emailBodyMaker.append(addressMultisig.getAddress());
@@ -235,7 +239,11 @@ public class TxCreateWS {
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_send_exactly") + " ");
                 emailBodyTaker.append(order.getAmountNetSell() + " ");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_buy_taker_send_quantity_to_wallet") + " ");              
-                emailBodyTaker.append("<a href=https://blockchain.info/address/");
+                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                    emailBodyTaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                    emailBodyTaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                }
                 emailBodyTaker.append(addressMultisig.getAddress());
                 emailBodyTaker.append(">");
                 emailBodyTaker.append(addressMultisig.getAddress());
@@ -289,7 +297,12 @@ public class TxCreateWS {
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_send_exactly") + " ");
                 emailBodyMaker.append(order.getAmountNetSell() + " ");
                 emailBodyMaker.append(ProjService.RB.getString("email_body_order_created_sell_maker_send_quantity_to_wallet") + " ");
-                emailBodyMaker.append("<a href=https://blockchain.info/address/");
+                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                    emailBodyMaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                    emailBodyMaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                }
+               
                 emailBodyMaker.append(addressMultisig.getAddress());
                 emailBodyMaker.append(">");
                 emailBodyMaker.append(addressMultisig.getAddress());
@@ -314,7 +327,7 @@ public class TxCreateWS {
                 emailBodyMaker.append(ProjService.RB.getString("email_body_end"));
                                 
                 StringUtil.setLanguageResource(takerLogin.getLang());
-                String emailSubjectTaker = ProjService.RB.getString("email_subject_order_created_buy_taker");
+                String emailSubjectTaker = ProjService.RB.getString("email_subject_order_created_sell_taker");
                 StringBuilder emailBodyTaker = new StringBuilder();
                 emailBodyTaker.append(ProjService.RB.getString("email_body_hi") + " ");
                 emailBodyTaker.append(takerLogin.getUsername() + ",");
@@ -328,7 +341,11 @@ public class TxCreateWS {
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_notify_seller") + " ");
                 emailBodyTaker.append(order.getAmountNetBuy() + " ");
                 emailBodyTaker.append(ProjService.RB.getString("email_body_order_created_sell_taker_pymnt_wallet") + " ");
-                emailBodyTaker.append("<a href=https://blockchain.info/address/");
+                if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                    emailBodyTaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                    emailBodyTaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                }
                 emailBodyTaker.append(addressMultisig.getAddress());
                 emailBodyTaker.append(">");
                 emailBodyTaker.append(addressMultisig.getAddress());

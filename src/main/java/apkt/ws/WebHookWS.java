@@ -250,7 +250,11 @@ public class WebHookWS {
                             emailBodyMaker.append(ProjService.RB.getString("email_body_order_confirmed_buyer") + " ");
                             emailBodyMaker.append(order.getAmountNetBuy());
                             emailBodyMaker.append(" " + ProjService.RB.getString("email_body_order_confirmed_buyer_multisig") + " ");
-                            emailBodyMaker.append("<a href=https://blockchain.info/address/");
+                            if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                                emailBodyMaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                            } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                                emailBodyMaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                            }
                             emailBodyMaker.append(addressMultisig.getAddress());
                             emailBodyMaker.append(">");
                             emailBodyMaker.append(addressMultisig.getAddress());
@@ -292,7 +296,11 @@ public class WebHookWS {
                             emailBodyTaker.append(ProjService.RB.getString("email_body_order_confirmed_seller") + " ");
                             emailBodyTaker.append(order.getAmountNetSell());
                             emailBodyTaker.append(" " + ProjService.RB.getString("email_body_order_confirmed_seller_multisig") + " ");
-                            emailBodyTaker.append("<a href=https://blockchain.info/address/");
+                            if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                                emailBodyTaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                            } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                                emailBodyTaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                            }
                             emailBodyTaker.append(addressMultisig.getAddress());
                             emailBodyTaker.append(">");
                             emailBodyTaker.append(addressMultisig.getAddress());
@@ -334,7 +342,11 @@ public class WebHookWS {
                             emailBodyMaker.append(ProjService.RB.getString("email_body_order_confirmed_seller") + " ");
                             emailBodyMaker.append(order.getAmountNetSell());
                             emailBodyMaker.append(" " + ProjService.RB.getString("email_body_order_confirmed_seller_multisig") + " ");
-                            emailBodyMaker.append("<a href=https://blockchain.info/address/");
+                            if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                                emailBodyMaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                            } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                                emailBodyMaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                            }
                             emailBodyMaker.append(addressMultisig.getAddress());
                             emailBodyMaker.append(">");
                             emailBodyMaker.append(addressMultisig.getAddress());
@@ -361,7 +373,11 @@ public class WebHookWS {
                             emailBodyTaker.append(ProjService.RB.getString("email_body_order_confirmed_buyer") + " ");
                             emailBodyTaker.append(order.getAmountNetBuy());
                             emailBodyTaker.append(" " + ProjService.RB.getString("email_body_order_confirmed_buyer_multisig") + " ");
-                            emailBodyTaker.append("<a href=https://blockchain.info/address/");
+                            if (ProjService.ADDRESS.equals(ProjService.AddressType.TESTNET)){
+                                emailBodyTaker.append("<a href=https://www.blocktrail.com/tBTC/address/");
+                            } else if (ProjService.ADDRESS.equals(ProjService.AddressType.MAIN)){
+                                emailBodyTaker.append("<a href=https://www.blocktrail.com/BTC/address/");
+                            }
                             emailBodyTaker.append(addressMultisig.getAddress());
                             emailBodyTaker.append(">");
                             emailBodyTaker.append(addressMultisig.getAddress());
