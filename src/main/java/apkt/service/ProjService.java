@@ -11,7 +11,7 @@ public class ProjService {
     public static final String BLOCKCYPHERTOKEN = "15cec3f0a8754248af469151f249b5d3";
     public static ResourceBundle RB;
 
-    private class AddressType{
+    public class AddressType{
         public static final String BLOCKCYPHERTEST = "C9uvjNrozYgX41C7yKdczFVz5qepHW1Yes";
         public static final String TESTNET = "n4ezJuxz1UYRurYdqD68DSbNijq51Uv73y"; // Private Key (Wallet Import Format): 92NDgKAN43Md1HsTVN3ZX8K2h2mK4hbyWbcGzTZpeZ6Dckc7Q5x
         public static final String MAIN = "1D9Yo3PyXbNJ6osgQnbEQf4wn8kZaPtSPc";

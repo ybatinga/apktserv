@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(apkt.ws.AppVersionCheckWS.class);
         resources.add(apkt.ws.CurrencyCodeWS.class);
         resources.add(apkt.ws.GenericGet.class);
+        resources.add(apkt.ws.GenericGetBasic.class);
         resources.add(apkt.ws.GenericPost.class);
         resources.add(apkt.ws.GenericResource.class);
         resources.add(apkt.ws.GenericResourceHttpDelete.class);
