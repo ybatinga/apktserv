@@ -130,6 +130,9 @@ public class ServiceDaoJpa {
             cq.select(tRoot).where(cb.equal(tRoot.get(stringColumnName), stringValue));
         } 
         cq.orderBy(cb.desc(tRoot.get("id")));
+        
+        em.getEntityManagerFactory().getCache().evictAll();
+        
         TypedQuery<T> q = em.createQuery(cq);
         tList = q.getResultList();            
         

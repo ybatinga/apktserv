@@ -43,14 +43,15 @@ import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
+import org.bitcoinj.wallet.listeners.WalletChangeEventListener;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.spongycastle.util.encoders.Hex;
 
 
 public class OpReturnMain {
 
-//    public static NetworkParameters params = TestNet3Params.get();
-    public static NetworkParameters params = MainNetParams.get();
+    public static NetworkParameters params = TestNet3Params.get();
+//    public static NetworkParameters params = MainNetParams.get();
     public static final String APP_NAME = "Twinings";
     private static final String TWININGS = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
     public static WalletAppKit bitcoin;
@@ -206,6 +207,7 @@ public class OpReturnMain {
     }
     
     public static void timestampData(EntityManager em, OpReturn opReturn) throws IOException, InsufficientMoneyException, Exception {
+        
         byte[] opReturnBytes = null;
         if (opReturn.getType().endsWith(OpReturn.OpReturnType.OP_RETURN_TYPE_TEXT)){
             opReturnBytes = opReturn.getText().getBytes("UTF-8");
@@ -255,12 +257,13 @@ public class OpReturnMain {
                 File file = new File(ProjService.RBPATH);
                 URL[] urls = {file.toURI().toURL()};
                 ClassLoader loader = new URLClassLoader(urls);
+                
                 ResourceBundle rb;
-                String language = "en";
+                String language = opReturn.getLang();
                 if (language.equals("pt")){
                     rb = ResourceBundle.getBundle("SystemMessages", Locale.forLanguageTag("pt"), loader);
                 } else {
-                    rb = ResourceBundle.getBundle("SystemMessages", Locale.getDefault(), loader);
+                    rb = ResourceBundle.getBundle("SystemMessages", Locale.forLanguageTag("en"), loader);
                 }
                 String emailSubject = rb.getString("email_body_op_return_subject_notarize");
                 StringBuilder emailBodyOpReturn = new StringBuilder();
@@ -276,8 +279,58 @@ public class OpReturnMain {
                 emailBodyOpReturn.append("<br></br><br></br>");
                 emailBodyOpReturn.append(rb.getString("email_body_op_return_search"));
                 emailBodyOpReturn.append(" ");
-                emailBodyOpReturn.append("https://www.blocktrail.com/BTC/tx/");
+                
+                if (ProjService.ADDRESS == ProjService.AddressType.MAIN){
+                    emailBodyOpReturn.append("https://chain.so/tx/BTC/");
+                }else if (ProjService.ADDRESS == ProjService.AddressType.TESTNET){
+                    emailBodyOpReturn.append("https://chain.so/tx/BTCTEST/");
+                }
                 emailBodyOpReturn.append(txOpReturn.getTxId());
+                
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_end"));
+                
+                JavaMailThread javaMailThread_1 = new JavaMailThread(opReturn.getEmail(), emailSubject, emailBodyOpReturn.toString());
+                ExecutorService threadExecutor = Executors.newCachedThreadPool();
+                threadExecutor.execute(javaMailThread_1);
+                threadExecutor.shutdown();
+            }else if (txOpReturn.getType().equals(OpReturnType.OP_RETURN_TYPE_TEXT)){
+                File file = new File(ProjService.RBPATH);
+                URL[] urls = {file.toURI().toURL()};
+                ClassLoader loader = new URLClassLoader(urls);
+                
+                ResourceBundle rb;
+                String language = opReturn.getLang();
+                if (language.equals("pt")){
+                    rb = ResourceBundle.getBundle("SystemMessages", Locale.forLanguageTag("pt"), loader);
+                } else {
+                    rb = ResourceBundle.getBundle("SystemMessages", Locale.forLanguageTag("en"), loader);
+                }
+                String emailSubject = rb.getString("email_body_op_return_subject_message");
+                StringBuilder emailBodyOpReturn = new StringBuilder();
+                emailBodyOpReturn.append(rb.getString("email_body_hi"));
+                emailBodyOpReturn.append(",");
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_op_return_subject_message"));
+                emailBodyOpReturn.append(": ");
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_op_return_transaction_id"));
+                emailBodyOpReturn.append(" ");
+                emailBodyOpReturn.append(txOpReturn.getTxId());
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_op_return_search"));
+                emailBodyOpReturn.append(" ");
+                
+                if (ProjService.ADDRESS == ProjService.AddressType.MAIN){
+                    emailBodyOpReturn.append("https://chain.so/tx/BTC/");
+                }else if (ProjService.ADDRESS == ProjService.AddressType.TESTNET){
+                    emailBodyOpReturn.append("https://chain.so/tx/BTCTEST/");
+                }
+                emailBodyOpReturn.append(txOpReturn.getTxId());
+                
+                emailBodyOpReturn.append("<br></br><br></br>");
+                emailBodyOpReturn.append(rb.getString("email_body_end"));
+                
                 JavaMailThread javaMailThread_1 = new JavaMailThread(opReturn.getEmail(), emailSubject, emailBodyOpReturn.toString());
                 ExecutorService threadExecutor = Executors.newCachedThreadPool();
                 threadExecutor.execute(javaMailThread_1);

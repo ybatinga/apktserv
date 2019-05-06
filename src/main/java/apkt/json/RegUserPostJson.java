@@ -6,6 +6,8 @@ import java.util.Date;
 public class RegUserPostJson {
 
     private Long id;
+    private byte[] emailB;
+    private byte[] passwordB;
     private String gcmRegId;
     private String username;
     private String email;
@@ -75,6 +77,21 @@ public class RegUserPostJson {
     public void setId(Long id) {
         this.id = id;
     }
+public byte[] getEmailB() {
+        return emailB;
+    }
+
+    public void setEmailB(byte[] emailB) {
+        this.emailB = emailB;
+    }
+
+    public byte[] getPasswordB() {
+        return passwordB;
+    }
+
+    public void setPasswordB(byte[] passwordB) {
+        this.passwordB = passwordB;
+    }
 
     public String getGcmRegId() {
         return gcmRegId;
@@ -90,14 +107,6 @@ public class RegUserPostJson {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getDocNum() {
@@ -130,14 +139,6 @@ public class RegUserPostJson {
 
     public void setDateLogin(Date dateLogin) {
         this.dateLogin = dateLogin;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
     }
 
     public String getSimSerialNumber() {

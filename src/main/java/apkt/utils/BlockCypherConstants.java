@@ -6,10 +6,10 @@ public class BlockCypherConstants {
     public static final String VERSION_V1 = "v1";
     
     // Bitcoin
-//    public static final String CURRENCY_BTC = "btc";
+    public static final String CURRENCY_BTC = "btc";
     
     // BlockCypher Test
-    public static final String CURRENCY_BTC = "bcy";
+//    public static final String CURRENCY_BTC = "bcy";
     
     
     
@@ -17,9 +17,9 @@ public class BlockCypherConstants {
 //    public static final String NETWORK = "main";
     
     // Bitcoin Testnet3
-//    public static final String NETWORK = "test3"
+    public static final String NETWORK = "test3";
     
     // BlockCypher Test
-    public static final String NETWORK = "test";
+//    public static final String NETWORK = "test";
     
 }

@@ -87,12 +87,11 @@ public class LoginWS {
             String appVer = null;
             boolean isVerifyVersion = false;
             
-    //        String[] pieces = login.split(":");        
-            // encodes password into bytes 
-            byte[] encoded = Base64.encodeBase64(RsaCypher.decryptData(authAux.getPasswordB()));
             String email = new String (RsaCypher.decryptData(authAux.getEmailB()));
-            // decodes password into string with sha512Hex hash
-            String sha512HexPassword = DigestUtils.sha512Hex(encoded);
+            
+            byte[] decoded = Base64.decodeBase64(authAux.getPasswordB());            
+            byte[] decrypted = RsaCypher.decryptData(decoded);
+            String sha512HexPassword = DigestUtils.sha512Hex(decrypted);
 
 //            if (email.equals("desenv.notes@gmail.com")){
 //                authAux.setSimSerialNumber("8955044rjsclgried009");

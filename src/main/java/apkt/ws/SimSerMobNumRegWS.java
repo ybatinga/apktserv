@@ -119,72 +119,72 @@ public class SimSerMobNumRegWS {
         
     }
 
-    public static void main(String[] args) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-		// FileReader("/usr/local/my/envir/glassfish-3.1.2.2/glassfish/domains/domain1/config/nestle"));
-
-		// Load CAs from an InputStream
-		// (could be from a resource or ByteArrayInputStream or ...)
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		// From https://www.washington.edu/itconnect/security/ca/load-der.crt
-		InputStream caInput = new BufferedInputStream(new FileInputStream("/usr/local/my/envir/glassfish-3.1.2.2/glassfish/domains/domain1/config/server.cer"));
-		Certificate ca;
-		try {
-		    ca = cf.generateCertificate(caInput);
-		    System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
-		} finally {
-		    caInput.close();
-		}
-
-		// Create a KeyStore containing our trusted CAs
-		String keyStoreType = KeyStore.getDefaultType();
-		KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-		keyStore.load(null, null);
-		keyStore.setCertificateEntry("ca", ca);
-
-		// Create a TrustManager that trusts the CAs in our KeyStore
-		String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-		TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-		tmf.init(keyStore);
-
-		// Create an SSLContext that uses our TrustManager
-		SSLContext context = SSLContext.getInstance("TLS");
-		context.init(null, tmf.getTrustManagers(), null);
-
-		String url_ = "https://localhost:8181/apekatoserv/webresources/"
-                + "simSerMobNumReg";
-		
-                RegUserPostJson regUserPostJson = new RegUserPostJson();
-                regUserPostJson.setId(Long.MIN_VALUE);
-                regUserPostJson.setEmail("asdf@asdf.com");
-                String gson = new Gson().toJson(regUserPostJson);
-	
-                
-		URL url = new URL(url_);                
-		HttpsURLConnection urlConnection =
-		    (HttpsURLConnection)url.openConnection();
-                urlConnection.setSSLSocketFactory(context.getSocketFactory());
-//                HttpURLConnection urlConnection =
-//		    (HttpURLConnection)url.openConnection();
-                
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-
-                OutputStream os = urlConnection.getOutputStream();
-                os.write(gson.getBytes());
-                os.flush();
-                
-		
-		InputStream in = urlConnection.getInputStream();
-		InputStreamReader reader =
-				new InputStreamReader(in);        
-        
-        RegUserPostJson stringTest =
-                new Gson().fromJson(reader, RegUserPostJson.class);
-
-        System.out.println(
-                "LoginResult: " + stringTest.toString());
-	
-
-	}
+//    public static void main(String[] args) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+//		// FileReader("/usr/local/my/envir/glassfish-3.1.2.2/glassfish/domains/domain1/config/nestle"));
+//
+//		// Load CAs from an InputStream
+//		// (could be from a resource or ByteArrayInputStream or ...)
+//		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+//		// From https://www.washington.edu/itconnect/security/ca/load-der.crt
+//		InputStream caInput = new BufferedInputStream(new FileInputStream("/usr/local/my/envir/glassfish-3.1.2.2/glassfish/domains/domain1/config/server.cer"));
+//		Certificate ca;
+//		try {
+//		    ca = cf.generateCertificate(caInput);
+//		    System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
+//		} finally {
+//		    caInput.close();
+//		}
+//
+//		// Create a KeyStore containing our trusted CAs
+//		String keyStoreType = KeyStore.getDefaultType();
+//		KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+//		keyStore.load(null, null);
+//		keyStore.setCertificateEntry("ca", ca);
+//
+//		// Create a TrustManager that trusts the CAs in our KeyStore
+//		String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+//		TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+//		tmf.init(keyStore);
+//
+//		// Create an SSLContext that uses our TrustManager
+//		SSLContext context = SSLContext.getInstance("TLS");
+//		context.init(null, tmf.getTrustManagers(), null);
+//
+//		String url_ = "https://localhost:8181/apekatoserv/webresources/"
+//                + "simSerMobNumReg";
+//		
+//                RegUserPostJson regUserPostJson = new RegUserPostJson();
+//                regUserPostJson.setId(Long.MIN_VALUE);
+//                regUserPostJson.setEmail("asdf@asdf.com");
+//                String gson = new Gson().toJson(regUserPostJson);
+//	
+//                
+//		URL url = new URL(url_);                
+//		HttpsURLConnection urlConnection =
+//		    (HttpsURLConnection)url.openConnection();
+//                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+////                HttpURLConnection urlConnection =
+////		    (HttpURLConnection)url.openConnection();
+//                
+//                urlConnection.setDoOutput(true);
+//                urlConnection.setRequestMethod("POST");
+//                urlConnection.setRequestProperty("Content-Type", "application/json");
+//
+//                OutputStream os = urlConnection.getOutputStream();
+//                os.write(gson.getBytes());
+//                os.flush();
+//                
+//		
+//		InputStream in = urlConnection.getInputStream();
+//		InputStreamReader reader =
+//				new InputStreamReader(in);        
+//        
+//        RegUserPostJson stringTest =
+//                new Gson().fromJson(reader, RegUserPostJson.class);
+//
+//        System.out.println(
+//                "LoginResult: " + stringTest.toString());
+//	
+//
+//	};
 }

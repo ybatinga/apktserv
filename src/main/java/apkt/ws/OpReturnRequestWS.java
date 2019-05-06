@@ -74,6 +74,7 @@ public class OpReturnRequestWS {
             opReturnUpdate.setEmail(opReturn.getEmail());
             opReturnUpdate.setFee(OpReturn.OpReturnFee.FEE);
             opReturnUpdate.setLoginId(opReturn.getLoginId());
+            opReturnUpdate.setLang(opReturn.getLang());
             
             GenericDaoJpa.update(em, OpReturn.class, opReturnUpdate);
             

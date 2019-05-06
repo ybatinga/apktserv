@@ -5,8 +5,12 @@ import java.util.ResourceBundle;
 
 public class ProjService {
     
+    public static final String SRNM = "postgres";
+    public static final String PSWD = "DT%nU%wGb{ELn2M";
+    public static final String SK8 = "jdbc:postgresql://localhost:5432/apekato";
+    
     public static final String URL = UrlType.HTTP_PROD;
-    public static final String ADDRESS = AddressType.MAIN;
+    public static final String ADDRESS = AddressType.TESTNET;
     public static final String RBPATH = ResourceBundlePath.AWS;
     public static final String BLOCKCYPHERTOKEN = "15cec3f0a8754248af469151f249b5d3";
     public static ResourceBundle RB;

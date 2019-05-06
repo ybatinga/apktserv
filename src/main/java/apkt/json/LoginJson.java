@@ -317,4 +317,4 @@ public class LoginJson {
     public void setAuthAux(AuthAux authAux) {
         this.authAux = authAux;
     }
-}
+    }

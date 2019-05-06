@@ -53,6 +53,9 @@ public class OpReturn implements Serializable {
     @Column(name = "login_id")
     private Long loginId;
     
+    @Column(name = "lang")
+    private String lang;
+    
     public OpReturn() {
     }
 
@@ -137,6 +140,14 @@ public class OpReturn implements Serializable {
 
     public void setLoginId(Long loginId) {
         this.loginId = loginId;
+    }
+    
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
     
     public static class OpReturnFee {

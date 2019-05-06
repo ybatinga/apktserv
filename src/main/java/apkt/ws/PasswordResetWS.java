@@ -45,9 +45,11 @@ public class PasswordResetWS {
             Login login = GenericDaoJpa.findByAttributeTwo(em, Login.class, "email", email, "passauxword", passwordResetCode);
             if (login != null){
                 String ok = LoginWSDaoJpa.updatePassAuxWord(em, login.getId(), "");
-                byte[] encoded = Base64.encodeBase64(RsaCypher.decryptData(authAux.getPasswordB()));            
-                // decodes password into string with sha512Hex hash
-                String sha512HexPassword = DigestUtils.sha512Hex(encoded);
+                
+                byte[] decoded = Base64.decodeBase64(authAux.getPasswordB());            
+                byte[] decrypted = RsaCypher.decryptData(decoded);
+                String sha512HexPassword = DigestUtils.sha512Hex(decrypted);
+                
                 String ok_1 = LoginWSDaoJpa.updatePassword(em, login.getId(), sha512HexPassword);
             }
             
