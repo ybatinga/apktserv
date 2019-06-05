@@ -1,17 +1,12 @@
 package apkt.cypher;
 
-import apkt.backingbean.AuthAux;
-import com.google.gson.Gson;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 public class AesCypher {  
     private static final String ALGO = "AES";  

@@ -1,11 +1,9 @@
 package apkt.model;
 
-import com.blockcypher.utils.gson.GsonFactory;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,11 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -154,11 +148,6 @@ public class Tx implements Serializable {
     private List<TxOutput> outputs = new ArrayList<TxOutput>();
 
     public Tx() {
-    }
-    
-    @Override
-    public String toString() {
-        return GsonFactory.getGson().toJson(this);
     }
 
     public boolean addInput(TxInput input) {

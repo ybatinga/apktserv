@@ -1,11 +1,7 @@
 package apkt.json;
 
 import apkt.backingbean.AuthAux;
-import apkt.model.Order;
-import apkt.model.PymntMthd;
-import apkt.model.Wallet;
 import java.util.Date;
-import java.util.List;
 
 public class LoginJson {
 
@@ -20,8 +16,6 @@ public class LoginJson {
     private String networkCountryIso;
     private String subscriberId;
     private Date dateSignup;
-    private List<PymntMthd> pymntMthdList;
-    private List<Wallet> walletList;
     private boolean userNonexistent;
     private String simSerialNumExists;
     private String emailExists;
@@ -56,9 +50,7 @@ public class LoginJson {
             String simOperator,
             String networkCountryIso,
             String subscriberId,
-            Date dateSignup,
-            List<PymntMthd> pymntMthdList,
-            List<Wallet> walletList
+            Date dateSignup
             ) {
         this.id = id;
         this.gcmRegId = gcmRegId;
@@ -72,8 +64,6 @@ public class LoginJson {
         this.networkCountryIso = networkCountryIso;
         this.subscriberId = subscriberId;
         this.dateSignup = dateSignup;
-        this.pymntMthdList = pymntMthdList;
-        this.walletList = walletList;
     }
     
     public LoginJson(
@@ -89,8 +79,6 @@ public class LoginJson {
             String networkCountryIso,
             String subscriberId,
             Date dateSignup,
-            List<PymntMthd> pymntMthdList,
-            List<Wallet> walletList,
             String appVersion,
             boolean verifyVersion
             ) {
@@ -106,8 +94,6 @@ public class LoginJson {
         this.networkCountryIso = networkCountryIso;
         this.subscriberId = subscriberId;
         this.dateSignup = dateSignup;
-        this.pymntMthdList = pymntMthdList;
-        this.walletList = walletList;
         this.appVersion = appVersion;
         this.verifyVersion = verifyVersion;
     }
@@ -125,8 +111,6 @@ public class LoginJson {
             String networkCountryIso,
             String subscriberId,
             Date dateSignup,
-            List<PymntMthd> pymntMthdList,
-            List<Wallet> walletList,
             String simSerialNumExists, 
             String emailExists, 
             String usernameExists
@@ -143,8 +127,6 @@ public class LoginJson {
         this.networkCountryIso = networkCountryIso;
         this.subscriberId = subscriberId;
         this.dateSignup = dateSignup;
-        this.pymntMthdList = pymntMthdList;
-        this.walletList = walletList;
         this.simSerialNumExists = simSerialNumExists;
         this.emailExists = emailExists;
         this.usernameExists = usernameExists;
@@ -236,22 +218,6 @@ public class LoginJson {
 
     public void setDateSignup(Date dateSignup) {
         this.dateSignup = dateSignup;
-    }
-
-    public List<PymntMthd> getPymntMthdList() {
-        return pymntMthdList;
-    }
-
-    public void setPymntMthdList(List<PymntMthd> pymntMthdList) {
-        this.pymntMthdList = pymntMthdList;
-    }
-    
-    public List<Wallet> getWalletList() {
-        return walletList;
-    }
-
-    public void setWalletList(List<Wallet> walletList) {
-        this.walletList = walletList;
     }
     
     public boolean getUserNonexistent() {

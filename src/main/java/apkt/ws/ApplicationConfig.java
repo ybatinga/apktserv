@@ -30,8 +30,6 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(apkt.ws.AppVersionCheckWS.class);
-        resources.add(apkt.ws.CurrencyCodeWS.class);
-        resources.add(apkt.ws.GenericGet.class);
         resources.add(apkt.ws.GenericGetBasic.class);
         resources.add(apkt.ws.GenericPost.class);
         resources.add(apkt.ws.GenericResource.class);
@@ -39,23 +37,9 @@ public class ApplicationConfig extends Application {
         resources.add(apkt.ws.LoginWS.class);
         resources.add(apkt.ws.OpReturnListWS.class);
         resources.add(apkt.ws.OpReturnRequestWS.class);
-        resources.add(apkt.ws.OrderListMarketWS.class);
-        resources.add(apkt.ws.OrderListWS.class);
-        resources.add(apkt.ws.OrderWS.class);
         resources.add(apkt.ws.PasswordCodeWS.class);
         resources.add(apkt.ws.PasswordForgotWS.class);
         resources.add(apkt.ws.PasswordResetWS.class);
-        resources.add(apkt.ws.PymntMthdDeleteWS.class);
-        resources.add(apkt.ws.PymntMthdListWS.class);
-        resources.add(apkt.ws.PymntMthdWS.class);
-        resources.add(apkt.ws.RegUserWS.class);
-        resources.add(apkt.ws.SimSerMobNumRegWS.class);
-        resources.add(apkt.ws.TxCancelWS.class);
-        resources.add(apkt.ws.TxCreateWS.class);
-        resources.add(apkt.ws.TxExecuteWS.class);
-        resources.add(apkt.ws.WalletDeleteWS.class);
-        resources.add(apkt.ws.WalletWS.class);
-        resources.add(apkt.ws.WebHookWS.class);
     }
     
 }

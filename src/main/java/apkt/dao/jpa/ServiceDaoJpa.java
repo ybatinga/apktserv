@@ -2,11 +2,8 @@ package apkt.dao.jpa;
 
 import apkt.backingbean.AuthAux;
 import apkt.cypher.RsaCypher;
-import apkt.dao.jpa.LoginWSDaoJpa;
-import apkt.json.ListOrderJson;
 import apkt.model.Login;
 import apkt.model.MobileInfo;
-import apkt.model.Order;
 import java.io.IOException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -135,69 +132,6 @@ public class ServiceDaoJpa {
         
         TypedQuery<T> q = em.createQuery(cq);
         tList = q.getResultList();            
-        
-        return tList;
-    }
-    
-    public static List getOrderList(EntityManager em, ListOrderJson listOrderJson) throws Exception{
-        List<Order> tList = null;
-        Login login = null;
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Order> cq = cb.createQuery(Order.class);
-            
-            Metamodel m = em.getMetamodel();
-            EntityType<Order> classMetaModel = m.entity(Order.class);
-            
-            Root<Order> orderRoot = cq.from(Order.class);
-            
-            String listType = listOrderJson.getListType();
-            String currencyCode = null;
-            
-//            Join<Order, TxBank> txBank = orderRoot.join(classMetaModel.getSingularAttribute("orderId", TxBank.class));
-            
-//            cq.select(tRoot).where(login.get("id").in(id));
-            if (listOrderJson.getUserId() != null){
-                login = ServiceDaoJpa.getUser(em, listOrderJson.getUserId());
-                currencyCode = login.getCurrencyCode();
-            } else {
-                currencyCode = listOrderJson.getCurrencyCode();
-            }
-            
-            if (listType.equals(Order.OrderListType.ORDER_LIST_TYPE_TRANSACTIONS)){
-                
-                cq.select(orderRoot);                
-                cq.where(
-                    cb.or(
-                        cb.equal(orderRoot.get("status"), Order.OrderStatuses.ORDER_STATUS_OPEN), 
-                        cb.equal(orderRoot.get("status"), Order.OrderStatuses.ORDER_STATUS_TX_REQUESTED), 
-                        cb.equal(orderRoot.get("status"), Order.OrderStatuses.ORDER_STATUS_TX_DEPOSITED),
-                        cb.equal(orderRoot.get("status"), Order.OrderStatuses.ORDER_STATUS_TX_CONFIRMED),
-                        cb.equal(orderRoot.get("status"), Order.OrderStatuses.ORDER_STATUS_TX_RELEASED),
-                        cb.equal(orderRoot.get("status"), Order.OrderStatuses.ORDER_STATUS_TX_CANCELED)
-                    ),
-                    cb.or(
-                        cb.equal(orderRoot.get("makerLoginId"), login.getId()),
-                        cb.equal(orderRoot.get("takerLoginId"), login.getId())
-                    ),
-                    cb.equal(orderRoot.get("currencyCode"), currencyCode)
-                );
-                
-            } else if (listType.equals(Order.OrderListType.ORDER_LIST_TYPE_BUY)
-                || listType.equals(Order.OrderListType.ORDER_LIST_TYPE_BUY_PUBLIC)){
-                cq.select(orderRoot).where(
-                        orderRoot.get("status").in(Order.OrderStatuses.ORDER_STATUS_OPEN),
-                        orderRoot.get("type").in(Order.OrderType.ORDER_TYPE_BUY),
-                        cb.equal(orderRoot.get("currencyCode"), currencyCode));    
-            } else if (listType.equals(Order.OrderListType.ORDER_LIST_TYPE_SELL)
-                || listType.equals(Order.OrderListType.ORDER_LIST_TYPE_SELL_PUBLIC)){
-                cq.select(orderRoot).where(
-                        orderRoot.get("status").in(Order.OrderStatuses.ORDER_STATUS_OPEN),
-                        orderRoot.get("type").in(Order.OrderType.ORDER_TYPE_SELL),
-                        cb.equal(orderRoot.get("currencyCode"), currencyCode));    
-            }
-            cq.orderBy(cb.desc(orderRoot.get("updatedAt")));
-            TypedQuery<Order> q = em.createQuery(cq);
-            tList = q.getResultList();            
         
         return tList;
     }

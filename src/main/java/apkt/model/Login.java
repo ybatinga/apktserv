@@ -1,6 +1,5 @@
 package apkt.model;
 
-import com.blockcypher.utils.gson.GsonFactory;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -101,11 +100,6 @@ public class Login implements Serializable {
         this.dateSignup = dateSignup;
     }
 
-    @Override
-    public String toString() {
-        return GsonFactory.getGson().toJson(this);
-    }
-    
     public Long getId() {
         return id;
     }

@@ -1,6 +1,5 @@
 package apkt.model;
 
-import com.blockcypher.utils.gson.GsonFactory;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -112,11 +109,6 @@ public class TxInput implements Serializable {
         this.walletToken = walletToken;
         this.txId = txId;
     }    
-    
-    @Override
-    public String toString() {
-        return GsonFactory.getGson().toJson(this);
-    }
     
     public boolean addAddress(String address) {
         return addresses.add(address);

@@ -12,8 +12,6 @@ import apkt.dao.jpa.RegUserDaoJpa;
 import apkt.json.LoginJson;
 import apkt.mail.JavaMailThread;
 import apkt.model.MobileInfo;
-import apkt.model.PymntMthd;
-import apkt.model.Wallet;
 import com.google.gson.Gson;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -183,8 +181,6 @@ public class RegUserWS {
             if (loginResult == null){
                 loginJson = new LoginJson(simSerialNumExists, emailExists, usernameExists);
             }else{
-                List<PymntMthd> pymntMthdList = ServiceDaoJpa.getObjList(em, PymntMthd.class, loginResult.getId(), "loginId", loginResult.getCurrencyCode(), "currencyCode");
-                List<Wallet> walletList = ServiceDaoJpa.getObjList(em, Wallet.class, loginResult.getId(), "loginId");        
                 loginJson = new LoginJson(
                         loginResult.getId(),
                         loginResult.getGcmRegId(),
@@ -198,8 +194,6 @@ public class RegUserWS {
                         mobileInfoRes.getNetworkCountryIso(),
                         mobileInfoRes.getSubscriberId(),
                         loginResult.getDateSignup(),
-                        pymntMthdList,
-                        walletList,
                         simSerialNumExists,
                         emailExists,
                         usernameExists

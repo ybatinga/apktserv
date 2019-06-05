@@ -2,17 +2,10 @@ package apkt.ws;
 
 import apkt.dao.jpa.GenericDaoJpa;
 import apkt.dao.jpa.ServiceDaoJpa;
-import apkt.json.ListTxOpReturnJson;
-import apkt.json.ObjectJson;
 import apkt.json.OpReturnJson;
-import apkt.json.StringResultJson;
 import apkt.mail.JavaMailThread;
 import apkt.model.OpReturn;
-import apkt.opreturn.OpReturnRunnable;
-import apkt.service.CalcVarsService;
-import com.google.common.util.concurrent.Service;
 import com.google.gson.Gson;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -30,9 +23,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.params.TestNet3Params;
 
 @Path("opReturnRequest")
 public class OpReturnRequestWS {

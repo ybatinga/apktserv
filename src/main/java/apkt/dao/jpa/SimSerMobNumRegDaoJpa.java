@@ -1,16 +1,9 @@
 package apkt.dao.jpa;
 
 import apkt.backingbean.MobileInfoBB;
-import apkt.json.LoginJson;
 import apkt.json.RegUserPostJson;
 import apkt.model.Login;
 import apkt.model.MobileInfo;
-import apkt.model.PymntMthd;
-import apkt.model.Wallet;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.lang.reflect.Modifier;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;

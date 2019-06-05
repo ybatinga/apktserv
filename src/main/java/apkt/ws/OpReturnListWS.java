@@ -1,11 +1,8 @@
 package apkt.ws;
 
-import apkt.dao.jpa.GenericDaoJpa;
 import apkt.dao.jpa.ServiceDaoJpa;
-import apkt.json.ListOpReturnJson;
 import apkt.json.ListTxOpReturnJson;
 import apkt.mail.JavaMailThread;
-import apkt.model.Login;
 import apkt.model.OpReturn;
 import apkt.model.TxOpReturn;
 import com.google.gson.Gson;
@@ -45,7 +42,7 @@ public class OpReturnListWS {
             
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("apekato");
             EntityManager em = emf.createEntityManager();
-
+            
             List<TxOpReturn> txOpReturnList = null;
             
             String type = null;

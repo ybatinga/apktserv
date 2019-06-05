@@ -9,20 +9,16 @@ import apkt.backingbean.AuthAux;
 import apkt.cypher.RsaCypher;
 import apkt.dao.jpa.GenericDaoJpa;
 import apkt.dao.jpa.LoginWSDaoJpa;
-import apkt.dao.jpa.ServiceDaoJpa;
 import apkt.json.LoginJson;
 import apkt.mail.JavaMailThread;
 import apkt.model.AppVersion;
 import apkt.model.Login;
 import apkt.model.MobileInfo;
-import apkt.model.PymntMthd;
-import apkt.model.Wallet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.lang.reflect.Modifier;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.persistence.EntityManager;
@@ -32,11 +28,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
-import javax.ws.rs.core.MediaType;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -132,8 +125,6 @@ public class LoginWS {
                     appVer = appVersion.getAppVersion();
                     isVerifyVersion = appVersion.isVerifyVersion();
                 }
-                List<PymntMthd> pymntMthdList = ServiceDaoJpa.getObjList(em, PymntMthd.class, login.getId(), "loginId", login.getCurrencyCode(), "currencyCode");                
-                List<Wallet> walletList = ServiceDaoJpa.getObjList(em, Wallet.class, login.getId(), "loginId");
                 // the following validation can't be used:
                 // if (!loginPostJsonClass.getGcmClientRegId().equals(login.getGcmRegId())).
                 // This validation doesn't work when there are two factors combined:
@@ -168,8 +159,6 @@ public class LoginWS {
                         mobileInfo.getNetworkCountryIso(),
                         mobileInfo.getSubscriberId(),
                         null, //login.getDateSignup(), causes on android app: java.text.ParseException: Unparseable date: at java.text.DateFormat.parse
-                        pymntMthdList,
-                        walletList,
                         appVer,
                         isVerifyVersion);
 

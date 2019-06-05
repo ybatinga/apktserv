@@ -2,9 +2,7 @@ package apkt.dao.jpa;
 
 import apkt.model.Login;
 import apkt.model.MobileInfo;
-import apkt.service.ProjService;
 import apkt.service.StringVarsService;
-import apkt.service.StringsService;
 import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
